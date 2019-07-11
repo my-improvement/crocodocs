@@ -14,7 +14,7 @@ CFonts.say('CROCODOCS', {
 
 console.log("\nThanks for installing",chalk.bold.cyan("crocodocs@" + require("./package.json").version))
 console.log("\nThis package allows you documentating your source codes in more simple steps.\n\n")
-console.log("Usage")
-console.log("\n1. To create an information about script description, create a single comment contains" + chalk.bold.yellow("CROS") + " following your script's description e.g " + chalk.bold.yellow("//CROS This Is Index Script"))
-console.log("\n2. To create an information about function, create a single comment contains " + chalk.bold.yellow("CROF") + " above your function, following your function's description e.g " + chalk.bold.yellow("//CROF This Is Initialization"))
-console.log("\n3. To generate the documentation after done editing project, simply move your terminal path to your project root path then run",chalk.bold.yellow("crocodocs run\n\n"))
+console.log(chalk.bold.yellow("Usage"))
+console.log("\n1. To create an information about script description, create a single comment contains " + chalk.bold.green("CROS") + " following your script's description e.g " + chalk.bold.green("//CROS This Is Index Script"))
+console.log("\n2. To create an information about function, create a single comment contains " + chalk.bold.green("CROF") + " above your function, following your function's description e.g " + chalk.bold.green("//CROF This Is Initialization"))
+console.log("\n3. To generate the documentation after done editing project, simply move your terminal path to your project root path then run " + chalk.bold.green("crocodocs run\n\n"))
