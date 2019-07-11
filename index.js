@@ -8,7 +8,7 @@ const open = require('open')
 const PDFDocument = require('pdfkit')
 
 commander
-.version('0.0.8')
+.version(require("./package.json").version)
 .description('Crocodic\'s Documentation Tool')
 
 commander
@@ -31,7 +31,7 @@ async function run() {
         letterSpacing: 1,           // define letter spacing
         lineHeight: 1,              // define the line height
         space: true,                // define if the output text should have empty lines on top and on the bottom
-        maxLength: '0',             // define how many character can be on one line
+        maxLength: '5',             // define how many character can be on one line
     })
 
     console.log(chalk.bold.cyan('Crocodic\'s Documentation Tool\n\n'))
@@ -92,13 +92,44 @@ function readFile(file, recentDoc) {
         for (let index = 0; index < dataArray.length; index++) {
             let trimmedLine = dataArray[index].trim()
 
-            if (trimmedLine.includes(">->") && !trimmedLine.includes(">->->")) {
-                result.information = result.information + (result.information != "" ? "\n" : "") + trimmedLine.substr(trimmedLine.indexOf(">->") + 3).trim()
-            } else if (trimmedLine.includes(">->->")) {
-                result.functions.push({
-                    name: trimmedLine.substring(0, trimmedLine.indexOf("{")),
-                    description: trimmedLine.substr(trimmedLine.indexOf(">->->") + 5).trim()
-                })
+            if (trimmedLine.toLowerCase().includes("cros")) {
+                result.information = result.information + (result.information != "" ? "\n" : "") + trimmedLine.substr(trimmedLine.toLowerCase().indexOf("cros") + 4).trim()
+            }
+            
+            if (trimmedLine.toLowerCase().includes("crof")) {
+                let name = ""
+
+                if(index < dataArray.length - 1) {
+                    let currentIndex = index + 1
+
+                    while(dataArray[currentIndex].indexOf("{") == -1 && currentIndex < dataArray.length - 1) {
+                        name = name + dataArray[currentIndex]
+                        name = name.trim()
+
+                        currentIndex++;
+                    } 
+
+                    name = name + dataArray[currentIndex].substr(0, dataArray[currentIndex].indexOf("{") - 1)
+                }
+
+                let parameters = name.substr(name.indexOf("("))
+                parameters = parameters.replace(/\s/g,'')
+
+                name = name.substr(0, name.indexOf("(")).replace(/ +(?= )/g,'').trim()
+
+                if(name != "") {
+                    let description = trimmedLine.substr(trimmedLine.toLowerCase().indexOf("crof") + 4).trim()
+
+                    if(description == "") {
+                        description = "** no description **"
+                    }
+
+                    result.functions.push({
+                        name: name,
+                        parameters: parameters,
+                        description: description
+                    })
+                }
             }
         }
 
@@ -113,20 +144,20 @@ function readFile(file, recentDoc) {
                 doc.pipe(fs.createWriteStream(docName))
             }
 
-            doc.fillColor("teal").text(file.path.split("/")[file.path.split("/").length - 1] + " - " + process.cwd().split("/")[process.cwd().split("/").length - 1] + file.path.substr(1))
-            doc.fillColor("black").text(result.information)
+            doc.fillColor("teal").text("• " + file.path.split("/")[file.path.split("/").length - 1] + " - " + process.cwd().split("/")[process.cwd().split("/").length - 1] + file.path.substr(1))
+            doc.fillColor("black").text("  " + result.information)
         }
 
         if(result.functions.length > 0) {
             console.log(chalk.bold.yellow("Functions Found :"))
 
-            doc.fillColor("gray").text("\nFunctions :\n\n").fillColor("black")
+            doc.fillColor("gray").text("\n  Functions :\n\n").fillColor("black")
 
             for (let i = 0; i < result.functions.length; i++) {
                 console.log(chalk.bold.red(result.functions[i].name), chalk.bold.green(result.functions[i].description))
 
-                doc.fillColor("red").text(result.functions[i].name + "\n").fillColor("black")
-                doc.text(result.functions[i].description)
+                doc.fillColor("red").text("  " + result.functions[i].name, {continued: true}).fillColor("blue").text(result.functions[i].parameters)
+                doc.fillColor("black").text("  " + result.functions[i].description)
                 
                 doc.text("\n")
             }
