@@ -8,7 +8,7 @@ const open = require('open')
 const PDFDocument = require('pdfkit')
 
 commander
-.version('0.0.5')
+.version('0.0.8')
 .description('Crocodic\'s Documentation Tool')
 
 commander
