@@ -13,7 +13,7 @@ CFonts.say('CROCODOCS', {
 })
 
 console.log("\nThanks for installing",chalk.bold.cyan("crocodocs@" + require("./package.json").version))
-console.log("\nThis package allows you documentating your source codes in more simple steps.\n")
+console.log("\nThis package allows you documentating your source codes in more simple steps.\n\n")
 console.log("Usage")
 console.log("\n1. To create an information about script description, create a single comment contains >-> then your description e.g",chalk.bold.yellow("//>-> This Is Index Script"))
 console.log("\n2. To create an information about function, create a single comment contains >->->, then your description e.g",chalk.bold.yellow("//>->-> This Is Initialization Function"))
