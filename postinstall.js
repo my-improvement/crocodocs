@@ -14,9 +14,14 @@ CFonts.say('CROCODOCS', {
 
 console.log(chalk.bold.white("\nThanks for installing ") + chalk.bold.cyan("crocodocs@" + require("./package.json").version))
 console.log(chalk.bold.white("\nThis package allows you documentating your source codes in more simple steps.\n\n"))
+
 console.log(chalk.bold.yellow("Usage"))
+
 console.log(chalk.bold.white("\n1. To create an information about script description, create a single comment contains ") + chalk.bold.green("CROCOS") + chalk.bold.white(" following your script's description e.g ") + chalk.bold.green("//CROCOS This Is The Index Script"))
-console.log(chalk.bold.white("\n2. To create an information about function, create a single comment contains ") + chalk.bold.green("CROCOF") + chalk.bold.white(" above your function, then next to it add your function's description e.g ") + chalk.bold.green("//CROCOF This Is Initialization's Function"))
-console.log(chalk.bold.white("\n3. To generate the documentation after done editing project, simply move your terminal path to your project root path then run ") + chalk.bold.green("crocodocs run"))
-console.log(chalk.bold.white("\n4. To clean all the documentation pdf files, move your terminal path to your project root path then run ") + chalk.bold.green("crocodocs clean"))
-console.log(chalk.bold.white("\n5. To see help instruction, run ") + chalk.bold.green("crocodocs -h\n\n"))
+console.log(chalk.bold.white("\n2. To create an information about function, create a single comment contains ") + chalk.bold.green("CROCOF") + chalk.bold.white(" above your function, then next to it add your function's description e.g ") + chalk.bold.green("//CROCOF This Is Initialization's Function\n\n"))
+
+console.log(chalk.bold.yellow("Commands"))
+
+console.log(chalk.bold.green("\n1. crocodocs run") + chalk.bold.white(" to generate the documentation after done editing project. Must run it from the project root path."))
+console.log(chalk.bold.green("\n2. crocodocs clean") + chalk.bold.white(" to clean all the documentation pdf files. Must run it from the project root path."))
+console.log(chalk.bold.green("\n3. crocodocs -h") + chalk.bold.white(" to see help instructions.\n\n\n"))

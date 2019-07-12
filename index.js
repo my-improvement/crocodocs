@@ -64,15 +64,17 @@ function run() {
 }
 
 function clean() {
-    let files = getListAllFiles("./Documentation")
+    if (fs.existsSync("./Documentation")) {
+        let files = getListAllFiles("./Documentation")
 
-    for(let i = 0; i < files.length; i++) {
-        if(files[i].endsWith(".pdf")) {
-            fs.unlink(files[i], (err) => {
-                if (err) {
-                    console.log("failed to delete local image:"+err);
-                }
-        });
+        for(let i = 0; i < files.length; i++) {
+            if(files[i].endsWith(".pdf")) {
+                fs.unlink(files[i], (err) => {
+                    if (err) {
+                        console.log("failed to delete local image:"+err);
+                    }
+                })
+            }
         }
     }
 
