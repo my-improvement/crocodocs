@@ -92,11 +92,14 @@ function readFile(file, recentDoc) {
         for (let index = 0; index < dataArray.length; index++) {
             let trimmedLine = dataArray[index].trim()
 
-            if (trimmedLine.toLowerCase().includes("crocos")) {
-                result.information = result.information + (result.information != "" ? "\n" : "") + trimmedLine.substr(trimmedLine.toLowerCase().indexOf("crocos") + 4).trim()
+            let prefixForScriptDetection = "crocos"
+            let prefixForFunctionDetection = "crocof"
+
+            if (trimmedLine.toLowerCase().includes(prefixForScriptDetection)) {
+                result.information = result.information + (result.information != "" ? "\n" : "") + trimmedLine.substr(trimmedLine.toLowerCase().indexOf(prefixForScriptDetection) + prefixForScriptDetection.length).trim()
             }
             
-            if (trimmedLine.toLowerCase().includes("crocof")) {
+            if (trimmedLine.toLowerCase().includes(prefixForFunctionDetection)) {
                 let name = ""
 
                 if(index < dataArray.length - 1) {
@@ -118,7 +121,7 @@ function readFile(file, recentDoc) {
                 name = name.substr(0, name.indexOf("(")).replace(/ +(?= )/g,'').trim()
 
                 if(name != "") {
-                    let description = trimmedLine.substr(trimmedLine.toLowerCase().indexOf("crocof") + 4).trim()
+                    let description = trimmedLine.substr(trimmedLine.toLowerCase().indexOf(prefixForFunctionDetection) + prefixForFunctionDetection.length).trim()
 
                     if(description == "") {
                         description = "** no description **"
