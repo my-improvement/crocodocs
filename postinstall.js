@@ -12,9 +12,9 @@ CFonts.say('CROCODOCS', {
     maxLength: '5',             // define how many character can be on one line
 })
 
-console.log("\nThanks for installing",chalk.bold.cyan("crocodocs@" + require("./package.json").version))
-console.log("\nThis package allows you documentating your source codes in more simple steps.\n\n")
+console.log(chalk.bold.white("\nThanks for installing ") + chalk.bold.cyan("crocodocs@" + require("./package.json").version))
+console.log(chalk.bold.white("\nThis package allows you documentating your source codes in more simple steps.\n\n"))
 console.log(chalk.bold.yellow("Usage"))
-console.log("\n1. To create an information about script description, create a single comment contains " + chalk.bold.green("CROS") + " following your script's description e.g " + chalk.bold.green("//CROS This Is Index Script"))
-console.log("\n2. To create an information about function, create a single comment contains " + chalk.bold.green("CROF") + " above your function, following your function's description e.g " + chalk.bold.green("//CROF This Is Initialization"))
-console.log("\n3. To generate the documentation after done editing project, simply move your terminal path to your project root path then run " + chalk.bold.green("crocodocs run\n\n"))
+console.log(chalk.bold.white("\n1. To create an information about script description, create a single comment contains ") + chalk.bold.green("CROCOS") + chalk.bold.white(" following your script's description e.g ") + chalk.bold.green("//CROCOS This Is Index Script"))
+console.log(chalk.bold.white("\n2. To create an information about function, create a single comment contains ") + chalk.bold.green("CROCOF") + chalk.bold.white(" above your function, then next to it add your function's description e.g ") + chalk.bold.green("//CROCOF This Is Initialization"))
+console.log(chalk.bold.white("\n3. To generate the documentation after done editing project, simply move your terminal path to your project root path then run ") + chalk.bold.green("crocodocs run\n\n"))

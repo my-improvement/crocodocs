@@ -92,11 +92,11 @@ function readFile(file, recentDoc) {
         for (let index = 0; index < dataArray.length; index++) {
             let trimmedLine = dataArray[index].trim()
 
-            if (trimmedLine.toLowerCase().includes("cros")) {
-                result.information = result.information + (result.information != "" ? "\n" : "") + trimmedLine.substr(trimmedLine.toLowerCase().indexOf("cros") + 4).trim()
+            if (trimmedLine.toLowerCase().includes("crocos")) {
+                result.information = result.information + (result.information != "" ? "\n" : "") + trimmedLine.substr(trimmedLine.toLowerCase().indexOf("crocos") + 4).trim()
             }
             
-            if (trimmedLine.toLowerCase().includes("crof")) {
+            if (trimmedLine.toLowerCase().includes("crocof")) {
                 let name = ""
 
                 if(index < dataArray.length - 1) {
@@ -118,7 +118,7 @@ function readFile(file, recentDoc) {
                 name = name.substr(0, name.indexOf("(")).replace(/ +(?= )/g,'').trim()
 
                 if(name != "") {
-                    let description = trimmedLine.substr(trimmedLine.toLowerCase().indexOf("crof") + 4).trim()
+                    let description = trimmedLine.substr(trimmedLine.toLowerCase().indexOf("crocof") + 4).trim()
 
                     if(description == "") {
                         description = "** no description **"
