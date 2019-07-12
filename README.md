@@ -4,7 +4,8 @@ This package allows you documentating your source codes in more simple steps.
 
 ## Installation ##
 
-1. Install crocodocs npm package globally by run ```sudo npm i crocodocs -g```.
+1. If you have not installed Node.js, [install](https://nodejs.org/) it first.
+2. Install crocodocs npm package globally by run ```sudo npm i crocodocs -g``` on command prompt or terminal.
 
 ## Usage ##
 
