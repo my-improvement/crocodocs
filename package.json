@@ -2,7 +2,7 @@
   "name": "crocodocs",
   "preferGlobal": true,
   "bin": "./index.js",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Crocodic's Documentation Tool",
   "main": "index.js",
   "scripts": {

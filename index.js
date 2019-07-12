@@ -14,15 +14,18 @@ commander
 commander
 .command('run')
 .description('Generate documentation')
-.action(() => {
-    run()
-})
+.action(() => run())
+
+commander
+.command('clean')
+.description('Clean all pdf files')
+.action(() => clean())
 
 var docName = ""
 
 commander.parse(process.argv)
 
-async function run() {
+function run() {
     CFonts.say('CROCODOCS', {
         font: 'block',              // define the font face
         align: 'left',              // define text alignment
@@ -60,6 +63,22 @@ async function run() {
     }
 }
 
+function clean() {
+    let files = getListAllFiles("./Documentation")
+
+    for(let i = 0; i < files.length; i++) {
+        if(files[i].endsWith(".pdf")) {
+            fs.unlink(files[i], (err) => {
+                if (err) {
+                    console.log("failed to delete local image:"+err);
+                }
+        });
+        }
+    }
+
+    console.log(chalk.bold.red("\nAll PDF files on " + chalk.bold.yellow("'Documentation'") + " directory has been cleaned!\n"))
+}
+
 function generateDocName() {
     let dirName = "Documentation"
 
@@ -67,11 +86,13 @@ function generateDocName() {
 
     let index = 0
 
-    let name = dirName + "/" + index.toString()
+    let slash = (process.platform == "win32" ? "\\" : "/")
+
+    let name = dirName + slash + index.toString()
 
     do {
-        name = dirName + "/" + (++index).toString()
-    } while (fs.existsSync("./" + name + ".pdf"))
+        name = dirName + slash + (++index).toString()
+    } while (fs.existsSync(name + ".pdf"))
 
     return name += ".pdf"
 }
@@ -115,8 +136,8 @@ function readFile(file, recentDoc) {
                     name = name + dataArray[currentIndex].substr(0, dataArray[currentIndex].indexOf("{") - 1)
                 }
 
-                let parameters = name.substr(name.indexOf("("))
-                parameters = parameters.replace(/\s/g,'')
+                let parameters = name.substr(name.indexOf("(")).trim().replace(/\s\s+/g, ' ')
+                parameters = parameters.replace("( ", "(")
 
                 name = name.substr(0, name.indexOf("(")).replace(/ +(?= )/g,'').trim()
 
@@ -137,7 +158,9 @@ function readFile(file, recentDoc) {
         }
 
         if(result.information != "" || result.functions.length > 0) {
-            console.log(chalk.bold.white(process.cwd().split("/")[process.cwd().split("/").length - 1] + file.path.substr(1)),chalk.bold.gray(result.information,"\n"))
+            let slash = (process.platform == "win32" ? "\\" : "/")
+
+            console.log(chalk.bold.white(process.cwd().split(slash)[process.cwd().split(slash).length - 1] + file.path.substr(1)),chalk.bold.gray(result.information,"\n"))
             
             if(doc == null) {
                 doc = new PDFDocument()
@@ -147,7 +170,13 @@ function readFile(file, recentDoc) {
                 doc.pipe(fs.createWriteStream(docName))
             }
 
-            doc.fillColor("teal").text("• " + file.path.split("/")[file.path.split("/").length - 1] + " - " + process.cwd().split("/")[process.cwd().split("/").length - 1] + file.path.substr(1))
+            let filePath = file.path.split(slash)[file.path.split(slash).length - 1]
+
+            if(process.platform == "win32") {
+                filePath = filePath.replace("./", "")
+            }
+
+            doc.fillColor("teal").text("• " + filePath + " - " + process.cwd().split(slash)[process.cwd().split(slash).length - 1] + file.path.substr(1))
             doc.fillColor("black").text("  " + result.information)
         }
 
@@ -176,6 +205,8 @@ function readFile(file, recentDoc) {
             readFile(file.nextFile, doc)
         } else {
             if(doc != null) {
+                console.log(chalk.bold.white("\nDocumentation has been successfully created at ") + chalk.bold.yellow(docName + "\n\n"))
+
                 doc.end()
             }
 
