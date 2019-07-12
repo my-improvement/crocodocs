@@ -20,7 +20,7 @@ This package allows you documentating your source codes in more simple steps.
 @IBAction func setContent( 
     in label: ActiveLabel,
 ) {
-
+    
 }
 ```
 
