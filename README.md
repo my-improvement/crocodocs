@@ -11,7 +11,7 @@ This package allows you documentating your source codes in more simple steps.
 1. To create an information about script description, create a single comment contains ```CROCOS```, following your script's description.
 2. To create an information about function, create a single comment contains ```CROCOF``` above your function, then next to it add your function's description.
 
-## EXAPMLE ##
+## Example ##
 
 ```
 //CROCOS App delegate script, this script is to be the first script to load when user opened the app
