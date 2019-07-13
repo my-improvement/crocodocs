@@ -22,6 +22,6 @@ console.log(chalk.bold.white("\n2. To create an information about function, crea
 
 console.log(chalk.bold.yellow("Commands"))
 
-console.log(chalk.bold.green("\n1. crocodocs run") + chalk.bold.white(" to generate the documentation after done editing project. Must run it from the project root path."))
-console.log(chalk.bold.green("\n2. crocodocs clean") + chalk.bold.white(" to clean all the documentation pdf files. Must run it from the project root path."))
-console.log(chalk.bold.green("\n3. crocodocs -h") + chalk.bold.white(" to see help instructions.\n\n\n"))
+console.log(chalk.bold.green("\n1. npx crocodocs run") + chalk.bold.white(" to generate the documentation after done editing project. Must run it from the project root path."))
+console.log(chalk.bold.green("\n2. npx crocodocs clean") + chalk.bold.white(" to clean all the documentation pdf files. Must run it from the project root path."))
+console.log(chalk.bold.green("\n3. npx crocodocs -h") + chalk.bold.white(" to see help instructions.\n\n\n"))

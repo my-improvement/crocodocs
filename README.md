@@ -5,7 +5,6 @@ This package allows you documentating your source codes in more simple steps.
 ## Installation ##
 
 1. If you have not installed Node.js, [install](https://nodejs.org/) it first.
-2. Install crocodocs npm package globally by run ```sudo npm i crocodocs -g``` on command prompt or terminal.
 
 ## Usage ##
 
@@ -27,6 +26,6 @@ This package allows you documentating your source codes in more simple steps.
 
 ## Commands ##
 
-1. ```crocodocs run``` to generate the documentation after done editing project. Must run it from the project root path.
-2. ```crocodocs clean``` to clean all the documentation pdf files. Must run it from the project root path.
-3. ```crocodocs -h``` to see help instructions.
+1. ```npx crocodocs run``` to generate the documentation after done editing project. Must run it from the project root path.
+2. ```npx crocodocs clean``` to clean all the documentation pdf files. Must run it from the project root path.
+3. ```npx crocodocs -h``` to see help instructions.
