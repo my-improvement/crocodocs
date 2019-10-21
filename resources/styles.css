@@ -1,0 +1,95 @@
+html {
+    scroll-behavior: smooth;
+}
+
+p {
+    font-family: "Lucida Console", Monaco, monospace
+}
+
+a {
+    /*list_of_contents*/color: gold;
+}
+
+body {
+    margin: 0px;
+}
+
+.navbar {
+    overflow: hidden;
+    /*navbar*/background-color: goldenrod;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    padding: 10px;
+    height: 80px;
+}
+
+.date {
+    float: right;
+    margin-right: 50px;
+    font-size: 18px;
+    /*date*/color: black;
+    margin-top: 30px;
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
+.content_container {
+    /*content_container*/background-color:dimgray;
+    padding: 50px;
+}
+
+.title_link {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.title {
+    /*title*/color: white;
+    font-size: 24px;
+    margin-left: 40px;
+}
+
+.list_of_contents {
+    /*list_of_contents_title*/color: white;
+    font-size: 24px;
+    margin-top: -60px;
+    padding-top: 180px;
+}
+
+.script_name {
+    /*script_name*/color: white;
+    font-size: 24px;
+    font-weight: bolder;
+    margin-top: -80px;
+    padding-top: 140px;
+}
+
+.type {
+    /*type*/color: red;
+    font-size: 14px;
+    margin-top: 50px;
+}
+
+.name {
+    /*name*/color: gold;
+}
+
+.description {
+    /*description*/color: lightgray;
+}
+
+.param_type {
+    /*param_type*/color: greenyellow;
+    font-size: 12px;
+    margin-top: 25px;
+}
+
+.param_name {
+    /*param_name*/color: gold;
+    font-size: 14px;
+}
+
+.param_description {
+    /*param_description*/color: darkgray;
+    font-size: 14px;
+}

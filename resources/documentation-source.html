@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./styles.css">
+    </head>
+
+    <body>
+        <div
+            class="navbar"
+        >
+            <div
+                class="date"
+            >
+                Creation date: [DATE]
+            </div>
+
+            <a
+                href="#list_of_contents"
+                class="title_link"
+            >
+                <p
+                    class="title"
+                >
+                    [PROJECT_NAME] Documentation
+                </p>
+            </a>
+        </div>
+
+        <div
+            class="content_container"
+        >
+            <p
+                class="list_of_contents"
+                id="list_of_contents"
+            >
+                List of contents
+            </p>
+
+            <div id="contents"></div>
+        </div>
+
+        <script>
+            var array = []
+
+            let html = ''
+
+            for (const index in array) {
+                const id = "#script" + index
+                
+                html += '<a href="' + id + '"><p>' + array[index].filePath + '</p></a>'
+            }
+
+            for (const index in array) {
+                html += '<p class="script_name" id=script' + index + '>' + array[index].filePath.split("/")[array[index].filePath.split("/").length - 1] + '</p>'
+                html += '<p class="description">' + array[index].description + '</p>'
+
+                function WriteItem(title, item) {
+                    html += '<p class="type">' + title + '</p>'
+                    html += '<p class="name">' + item.type + ' - ' + item.name + '</p>'
+                    html += '<p class="description">' + item.description + '</p>'
+                }
+
+                if(array[index].variables.length > 0) {
+                    for(const variable of array[index].variables) {
+                        WriteItem("Variable", variable)
+                    }
+                }
+
+                if(array[index].functions.length > 0) {
+                    for(const theFunction of array[index].functions) {
+                        WriteItem("Function", theFunction)
+
+                        if(theFunction.parameters.length > 0) {
+                            html += '<p class="param_type">Parameters</p>'
+
+                            for(const parameter of theFunction.parameters) {
+                                html += '<p class="param_name">' + parameter.type + ' - ' + parameter.name + '</p>'
+                                html += '<p class="param_description">' + parameter.description + '</p>'
+                            }
+                        }
+                    }
+                }
+            }
+
+            document.getElementById('contents').innerHTML = html
+        </script>
+    </body>
+</html>
