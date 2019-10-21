@@ -70,7 +70,7 @@ After done with commenting scripts, to export a documentation just run ```npx cr
 
 ### Result
 
-![alt text](https://github.com/reynaldpn/crocodocs/blob/master/screenshots/1.png)
+![alt text](https://raw.githubusercontent.com/reynaldpn/crocodocs/master/screenshots/1.png)
 
 ### Customizing documentation preferences
 
