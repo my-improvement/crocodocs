@@ -68,6 +68,10 @@ export default class HelloWorld extends React.Component {
 
 After done with commenting scripts, to export a documentation just run ```npx crocodocs create``` in command prompt / terminal at project's root path, your documentation should be opened directly after finish exporting, you can also find the file at PROJECT'S_ROOT_PATH/documentation/index.html
 
+### Result
+
+![alt text](https://github.com/reynaldpn/crocodocs/1.png)
+
 ### Customizing documentation preferences
 
 Create json file named ```crocodocs_prefs.json``` on the project's root path like this
