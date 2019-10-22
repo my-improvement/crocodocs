@@ -3,7 +3,7 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "version": "0.3.1",
-  "description": "Crocodic's Documentation Tool",
+  "description": "Create documentation more comfortably 🤩",
   "main": "index.js",
   "scripts": {},
   "author": "renalpraba",

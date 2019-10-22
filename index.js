@@ -10,7 +10,7 @@ const path = require('path')
 
 commander
 .version(require("./package.json").version)
-.description('Easily create a documentation, without the tears 😭')
+.description('Create documentation more comfortably 🤩')
 
 commander
 .command('create')
@@ -55,8 +55,7 @@ function readFile(file) {
                             {
                                 filePath: file.path,
                                 description: "",
-                                functions: [],
-                                variables: []
+                                elements: []
                             }
                         )
                     }
@@ -68,8 +67,9 @@ function readFile(file) {
                     if(lowercasedLine.includes("//des")) {
                         pickedResult.description = lines[i].trim().substring(6, lines[i].length)
                     } else if(lowercasedLine.includes("//fun")) {
-                        pickedResult.functions.push({
+                        pickedResult.elements.push({
                             ...GetNameTypeAndDescription(lines[i]),
+                            elementType: "function",
                             parameters: []
                         })
 
@@ -81,7 +81,7 @@ function readFile(file) {
                             let lowercasedNextLine = nextLine.toLowerCase()
 
                             if(lowercasedNextLine.includes("//param")) {
-                                pickedResult.functions[pickedResult.functions.length - 1].parameters.push(GetNameTypeAndDescription(nextLine))
+                                pickedResult.elements[pickedResult.elements.length - 1].parameters.push(GetNameTypeAndDescription(nextLine))
 
                                 parameterFoundAtNextLine++
                             } else {
@@ -89,7 +89,10 @@ function readFile(file) {
                             }
                         }
                     } else if(lowercasedLine.includes("//var")) {
-                        pickedResult.variables.push(GetNameTypeAndDescription(lines[i]))
+                        pickedResult.elements.push({
+                            ...GetNameTypeAndDescription(lines[i]),
+                            elementType: "variable",
+                        })
                     }
                 }
             }
@@ -118,83 +121,106 @@ function readFile(file) {
 
                     newValue = newValue.replace("[DATE]", (new Date()).toDateString())
 
-                    if (fs.existsSync('./crocodocs_prefs.json')){
-                        fs.readFile('./crocodocs_prefs.json', {encoding: 'utf-8'}, function(err, data) {
-                            if (err) throw error
-
-                            const json = JSON.parse(data)
-
-                            newValue = newValue.replace("[PROJECT_NAME]", json.name || projectName)
-
-                            if(typeof json.colors === 'object' && json.colors != undefined) {
-                                let styles = fs.readFileSync('documentation/styles.css', 'utf-8')
-
-                                if(json.colors.navbar != undefined) {
-                                    styles = styles.replace("/*navbar*/background-color: goldenrod", "/*navbar*/background-color: " + json.colors.navbar)
-                                }
-
-                                if(json.colors.date != undefined) {
-                                    styles = styles.replace("/*date*/color: black", "/*date*/color: " + json.colors.date)
-                                }
-
-                                if(json.colors.content_container != undefined) {
-                                    styles = styles.replace("/*content_container*/background-color:dimgray", "/*content_container*/background-color: " + json.colors.content_container)
-                                }
-
-                                if(json.colors.title != undefined) {
-                                    styles = styles.replace("/*title*/color: white", "/*title*/color: " + json.colors.title)
-                                }
-
-                                if(json.colors.list_of_contents_title != undefined) {
-                                    styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + json.colors.list_of_contents_title)
-                                }
-
-                                if(json.colors.list_of_contents != undefined) {
-                                    styles = styles.replace("/*list_of_contents*/color: gold", "/*list_of_contents*/color: " + json.colors.list_of_contents)
-                                }
-
-                                if(json.colors.script_name != undefined) {
-                                    styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + json.colors.script_name)
-                                }
-
-                                if(json.colors.type != undefined) {
-                                    styles = styles.replace("/*type*/color: red", "/*type*/color: " + json.colors.type)
-                                }
-
-                                if(json.colors.name != undefined) {
-                                    styles = styles.replace("/*name*/color: gold", "/*name*/color: " + json.colors.name)
-                                }
-
-                                if(json.colors.description != undefined) {
-                                    styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + json.colors.description)
-                                }
-
-                                if(json.colors.param_type != undefined) {
-                                    styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + json.colors.param_type)
-                                }
-
-                                if(json.colors.param_name != undefined) {
-                                    styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + json.colors.param_name)
-                                }
-
-                                if(json.colors.param_description!= undefined) {
-                                    styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + json.colors.param_description)
-                                }
-
-                                fs.writeFileSync('documentation/styles.css', styles, 'utf-8')
+                    if (!fs.existsSync('./crocodocs_prefs.json')){
+                        const styles = {
+                            colors: {
+                                navbar: "goldenrod",
+                                date: "#000",
+                                list_container: "rgb(50,50,50)",
+                                list_of_contents_title: "rgb(255,255,255)", 
+                                list_of_contents: "gold",
+                                content_container: "#000",
+                                title: "rgb(255,255,255)",
+                                script_name: "rgb(255,255,255)",
+                                type: "red",
+                                name: "gold",
+                                description: "lightgray",
+                                param_type: "greenyellow",
+                                param_name: "gold",
+                                param_description: "darkgray"
                             }
-    
-                            fs.writeFileSync(fileName, newValue, 'utf-8')
-            
-                            open(fileName)
-                        })
-                    } else {
-                        newValue = newValue.replace("[PROJECT_NAME]", path.basename(path.resolve(".")))
-    
+                        }
+
+                        styles.name = path.basename(path.resolve("."))
+
+                        fs.writeFileSync('./crocodocs_prefs.json', JSON.stringify(styles, null, "\t"), 'utf-8')
+                    }
+
+                    fs.readFile('./crocodocs_prefs.json', {encoding: 'utf-8'}, function(err, data) {
+                        if (err) throw error
+
+                        const json = JSON.parse(data)
+
+                        newValue = newValue.replace("[PROJECT_NAME_TITLE]", json.name || projectName)
+
+                        newValue = newValue.replace("[PROJECT_NAME]", json.name || projectName)
+
+                        if(typeof json.colors === 'object' && json.colors != undefined) {
+                            let styles = fs.readFileSync('documentation/styles.css', 'utf-8')
+
+                            if(json.colors.navbar != undefined) {
+                                styles = styles.replace("/*navbar*/background-color: goldenrod", "/*navbar*/background-color: " + json.colors.navbar)
+                            }
+
+                            if(json.colors.date != undefined) {
+                                styles = styles.replace("/*date*/color: black", "/*date*/color: " + json.colors.date)
+                            }
+
+                            if(json.colors.list_container != undefined) {
+                                styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + json.colors.list_container)
+                            }
+
+                            if(json.colors.content_container != undefined) {
+                                styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + json.colors.content_container)
+                            }
+
+                            if(json.colors.title != undefined) {
+                                styles = styles.replace("/*title*/color: white", "/*title*/color: " + json.colors.title)
+                            }
+
+                            if(json.colors.list_of_contents_title != undefined) {
+                                styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + json.colors.list_of_contents_title)
+                            }
+
+                            if(json.colors.list_of_contents != undefined) {
+                                styles = styles.replace("/*list_of_contents*/color: gold", "/*list_of_contents*/color: " + json.colors.list_of_contents)
+                            }
+
+                            if(json.colors.script_name != undefined) {
+                                styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + json.colors.script_name)
+                            }
+
+                            if(json.colors.type != undefined) {
+                                styles = styles.replace("/*type*/color: red", "/*type*/color: " + json.colors.type)
+                            }
+
+                            if(json.colors.name != undefined) {
+                                styles = styles.replace("/*name*/color: gold", "/*name*/color: " + json.colors.name)
+                            }
+
+                            if(json.colors.description != undefined) {
+                                styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + json.colors.description)
+                            }
+
+                            if(json.colors.param_type != undefined) {
+                                styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + json.colors.param_type)
+                            }
+
+                            if(json.colors.param_name != undefined) {
+                                styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + json.colors.param_name)
+                            }
+
+                            if(json.colors.param_description!= undefined) {
+                                styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + json.colors.param_description)
+                            }
+
+                            fs.writeFileSync('documentation/styles.css', styles, 'utf-8')
+                        }
+
                         fs.writeFileSync(fileName, newValue, 'utf-8')
         
                         open(fileName)
-                    }
+                    })
                 })
             })
         }
@@ -218,7 +244,7 @@ function GetNameTypeAndDescription(line) {
 //File Helpers
 
 function getAllFilesObject(dirPath) {
-    const allFilesPath = getListAllFilesPath(dirPath)
+    let allFilesPath = getListAllFilesPath(dirPath).reverse()
 
     const files = []
 

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>[PROJECT_NAME_TITLE] Documentation</title>
+
         <link rel="stylesheet" type="text/css" href="./styles.css">
     </head>
 
@@ -14,41 +16,51 @@
                 Creation date: [DATE]
             </div>
 
-            <a
-                href="#list_of_contents"
-                class="title_link"
+            <p
+                class="title"
             >
-                <p
-                    class="title"
-                >
-                    [PROJECT_NAME] Documentation
-                </p>
-            </a>
+                [PROJECT_NAME] Documentation
+            </p>
         </div>
 
         <div
             class="content_container"
         >
-            <p
-                class="list_of_contents"
-                id="list_of_contents"
+            <div
+                id="side-nav"
             >
-                List of contents
-            </p>
+                <p
+                    class="list_of_contents"
+                >
+                    List of contents
+                </p>
 
-            <div id="contents"></div>
+                <div id="lists"></div>
+
+                <div class="padding-bottom-lists"></div>
+            </div>
+
+            <div id="content-wrapper">
+                <div id="contents"></div>
+
+                <div class="padding-bottom-contents"></div>
+            </div>
         </div>
 
         <script>
             var array = []
 
-            let html = ''
+            let listHtml = ''
 
             for (const index in array) {
                 const id = "#script" + index
                 
-                html += '<a href="' + id + '"><p>' + array[index].filePath + '</p></a>'
+                listHtml += '<a href="' + id + '"><p class="script_link">' + array[index].filePath + '</p></a>'
             }
+
+            document.getElementById('lists').innerHTML = listHtml
+
+            let html = ''
 
             for (const index in array) {
                 html += '<p class="script_name" id=script' + index + '>' + array[index].filePath.split("/")[array[index].filePath.split("/").length - 1] + '</p>'
@@ -60,20 +72,16 @@
                     html += '<p class="description">' + item.description + '</p>'
                 }
 
-                if(array[index].variables.length > 0) {
-                    for(const variable of array[index].variables) {
-                        WriteItem("Variable", variable)
-                    }
-                }
+                for(const element of array[index].elements) {
+                    if(element.elementType == "variable") {
+                        WriteItem("Variable", element)
+                    } else if(element.elementType == "function") {
+                        WriteItem("Function", element)
 
-                if(array[index].functions.length > 0) {
-                    for(const theFunction of array[index].functions) {
-                        WriteItem("Function", theFunction)
-
-                        if(theFunction.parameters.length > 0) {
+                        if(element.parameters.length > 0) {
                             html += '<p class="param_type">Parameters</p>'
 
-                            for(const parameter of theFunction.parameters) {
+                            for(const parameter of element.parameters) {
                                 html += '<p class="param_name">' + parameter.type + ' - ' + parameter.name + '</p>'
                                 html += '<p class="param_description">' + parameter.description + '</p>'
                             }

@@ -1,17 +1,9 @@
-html {
-    scroll-behavior: smooth;
+body {
+    margin: 0px;
 }
 
 p {
-    font-family: "Lucida Console", Monaco, monospace
-}
-
-a {
-    /*list_of_contents*/color: gold;
-}
-
-body {
-    margin: 0px;
+    font-family: "Lucida Console", Monaco, monospace;
 }
 
 .navbar {
@@ -24,6 +16,12 @@ body {
     height: 80px;
 }
 
+.title {
+    /*title*/color: white;
+    font-size: 24px;
+    margin-left: 20px;
+}
+
 .date {
     float: right;
     margin-right: 50px;
@@ -33,41 +31,60 @@ body {
     font-family: "Lucida Console", Monaco, monospace;
 }
 
-.content_container {
-    /*content_container*/background-color:dimgray;
-    padding: 50px;
-}
-
-.title_link {
-    text-decoration: none;
-    display: inline-block;
-}
-
-.title {
-    /*title*/color: white;
-    font-size: 24px;
-    margin-left: 40px;
+#side-nav {
+    position: fixed;
+    width: 300px;
+    height:100vh;
+    overflow-y: scroll;
+    padding: 30px;
+    /*list_container*/background-color:rgb(50,50,50);
+    top: 100px;
 }
 
 .list_of_contents {
     /*list_of_contents_title*/color: white;
-    font-size: 24px;
-    margin-top: -60px;
-    padding-top: 180px;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 18px;
+    margin-top: 0px;
+    /* margin-top: -60px; */
+}
+
+.script_link {
+    /*list_of_contents*/color: gold;
+    font-size: 12px;
+    margin-top: 20px;
+    width: 240px;
+    word-wrap: break-word;
+}
+
+.padding-bottom-lists {
+    height: 150px;
+}
+
+#content-wrapper {
+    margin: 100px 0 0 300px;
+    padding: 0 30px;
+    overflow-y: scroll;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height:100vh;
+    /*content_container*/background-color:#000;
 }
 
 .script_name {
     /*script_name*/color: white;
     font-size: 24px;
     font-weight: bolder;
-    margin-top: -80px;
-    padding-top: 140px;
+    margin-top: 0px;
+    padding-top: 30px;
 }
 
 .type {
     /*type*/color: red;
     font-size: 14px;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .name {
@@ -81,7 +98,7 @@ body {
 .param_type {
     /*param_type*/color: greenyellow;
     font-size: 12px;
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 .param_name {
@@ -92,4 +109,8 @@ body {
 .param_description {
     /*param_description*/color: darkgray;
     font-size: 14px;
+}
+
+.padding-bottom-contents {
+    height: 115px;
 }
