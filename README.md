@@ -97,3 +97,5 @@ If there is no ```crocodocs_prefs.json``` file in project's root path, the file 
 	"name": "ProjectName"
 }
 ```
+
+Run ```npx crocodocs create``` at project's root path in the command prompt / terminal again to get documentation with the latest preferences.
