@@ -10,7 +10,7 @@ You only need [Node.js](https://nodejs.org/en/) to run this package
 
 Comment your lines with
 
-```//Dev YourDescription``` this will declare a script with description in the documentation
+```//Des YourDescription``` this will declare a script with description in the documentation
 
 ```//VAR TypeData; VariableName; YourDescription``` this will declare a variable with name, type data and description in the documentation
 
