@@ -37,7 +37,7 @@ function readFile(file) {
             for(let i = 0; i < lines.length; i++) {
                 const lowercasedLine = lines[i].toLowerCase()
 
-                const isHavingData = lowercasedLine.includes("//des") || lowercasedLine.includes("//fun") || lowercasedLine.includes("//var")
+                const isHavingData = lowercasedLine.includes("//des ") || lowercasedLine.includes("//fun ") || lowercasedLine.includes("//var ")
 
                 let alreadyRegisteredInIndex = -1
 
@@ -64,9 +64,9 @@ function readFile(file) {
 
                     const pickedResult = results[alreadyRegisteredInIndex]
 
-                    if(lowercasedLine.includes("//des")) {
+                    if(lowercasedLine.includes("//des ")) {
                         pickedResult.description = lines[i].trim().substring(6, lines[i].length)
-                    } else if(lowercasedLine.includes("//fun")) {
+                    } else if(lowercasedLine.includes("//fun ")) {
                         pickedResult.elements.push({
                             ...GetNameTypeAndDescription(lines[i]),
                             elementType: "function",
@@ -88,7 +88,7 @@ function readFile(file) {
                                 parameterFoundAtNextLine = -1
                             }
                         }
-                    } else if(lowercasedLine.includes("//var")) {
+                    } else if(lowercasedLine.includes("//var ")) {
                         pickedResult.elements.push({
                             ...GetNameTypeAndDescription(lines[i]),
                             elementType: "variable",
