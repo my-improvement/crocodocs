@@ -3,7 +3,7 @@
   "preferGlobal": true,
   "bin": "./index.js",
   "version": "0.3.1",
-  "description": "Create documentation more comfortably 🤩",
+  "description": "Cutting the complexity in the making of a documentation",
   "main": "index.js",
   "scripts": {},
   "author": "renalpraba",

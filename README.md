@@ -1,6 +1,6 @@
 # Welcome to crocodocs
 
-Create documentation more comfortably 🤩
+Cutting the complexity in the making of a documentation
 
 ### Installation
 

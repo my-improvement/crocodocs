@@ -10,7 +10,7 @@ const path = require('path')
 
 commander
 .version(require("./package.json").version)
-.description('Create documentation more comfortably 🤩')
+.description('Cutting the complexity in the making of a documentation')
 
 commander
 .command('create')
