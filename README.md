@@ -106,6 +106,10 @@ If you want to delete all the documentation and preferences data run ```npx croc
 
 ### Removing comments and caches
 
-To delete all comments (//des, //fun, //var, //param) and caches in the project run ```npx crocodocs erase-all``` at project's root path folder in command prompt / terminal.
+To delete all comments ( ```//des```, ```//fun```, ```//var```, ```//param``` ) and caches in the project run ```npx crocodocs erase-all``` at project's root path folder in command prompt / terminal.
 
 Make sure you have back up files if you want to revert it again.
+
+### Sample Project To Test
+
+You can find the sample project to test [here](https://github.com/reynaldpn/crocodocs/tree/master/SampleProject)
