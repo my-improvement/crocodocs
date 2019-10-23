@@ -8,7 +8,7 @@ p {
 
 .navbar {
     overflow: hidden;
-    /*navbar*/background-color: goldenrod;
+    /*navbar*/background-color: crimson;
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
@@ -50,7 +50,7 @@ p {
 }
 
 .script_link {
-    /*list_of_contents*/color: gold;
+    /*list_of_contents*/color: skyblue;
     font-size: 12px;
     margin-top: 20px;
     width: 240px;

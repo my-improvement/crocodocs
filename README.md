@@ -74,26 +74,26 @@ After done with commenting scripts, to export a documentation just run ```npx cr
 
 ### Customizing documentation preferences
 
-If there is no ```crocodocs_prefs.json``` file in project's root path, the file will be created right before processing the making of the documentation. This file contains name and colors (in web color format) preferences you can edit as you want anyway.
+If there is no ```preferences.json``` file in crocodocs folder in the project's root path, the file will be created right before processing the making of the documentation. This file contains name and colors (in web color format) preferences you can edit as you want anyway.
 
 ```
 {
     "colors": {
-		"navbar": "goldenrod",
-		"date": "#000",
-		"list_container": "rgb(50,50,50)",
-		"list_of_contents_title": "rgb(255,255,255)",
-		"list_of_contents": "gold",
-		"content_container": "#000",
-		"title": "rgb(255,255,255)",
-		"script_name": "rgb(255,255,255)",
-		"type": "red",
-		"name": "gold",
-		"description": "lightgray",
-		"param_type": "greenyellow",
-		"param_name": "gold",
-		"param_description": "darkgray"
-	},
+        navbar: "crimson",
+        date: "#000",
+        list_container: "rgb(50,50,50)",
+        list_of_contents_title: "rgb(255,255,255)", 
+        list_of_contents: "skyblue",
+        content_container: "#000",
+        title: "rgb(255,255,255)",
+        script_name: "rgb(255,255,255)",
+        type: "red",
+        name: "gold",
+        description: "lightgray",
+        param_type: "greenyellow",
+        param_name: "gold",
+        param_description: "darkgray"
+    },
 	"name": "ProjectName"
 }
 ```

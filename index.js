@@ -103,127 +103,163 @@ function readFile(file) {
         } else {
             const fs = require('fs')
 
-            if (!fs.existsSync('documentation')){
-                fs.mkdirSync('documentation')
+            if (!fs.existsSync('crocodocs')){
+                fs.mkdirSync('crocodocs')
             }
 
-            const fileName = 'documentation/index.html'
+            if (!fs.existsSync('crocodocs/documentation')){
+                fs.mkdirSync('crocodocs/documentation')
+            }
 
-            fs.copyFile(__dirname + '/resources/styles.css', 'documentation/styles.css', (err) => {
-                if (err) throw err
-                
-                fs.copyFile(__dirname + '/resources/documentation-source.html', fileName, (err) => {
+            if (fs.existsSync('crocodocs/documentation/index.html') && fs.existsSync('crocodocs/documentation/styles.css')){
+                if (!fs.existsSync('crocodocs/old_documentation')){
+                    fs.mkdirSync('crocodocs/old_documentation')
+                }
+
+                let revisionNumber = 1
+
+                while(fs.existsSync('crocodocs/old_documentation/' + revisionNumber.toString())) {
+                    ++revisionNumber
+                }
+
+                fs.mkdirSync('crocodocs/old_documentation/' + revisionNumber.toString())
+
+                fs.rename('crocodocs/documentation/index.html', 'crocodocs/old_documentation/' + revisionNumber.toString() + '/index.html', (err) => {
                     if (err) throw err
-    
-                    let data = fs.readFileSync(fileName, 'utf-8')
-    
-                    let newValue = data.replace("var array = []", "var array = " + JSON.stringify(results, null, 4))
 
-                    newValue = newValue.replace("[DATE]", (new Date()).toDateString())
+                    fs.rename('crocodocs/documentation/styles.css', 'crocodocs/old_documentation/' + revisionNumber.toString() + '/styles.css', (err) => {
+                        if (err) throw err
 
-                    if (!fs.existsSync('./crocodocs_prefs.json')){
-                        const styles = {
-                            colors: {
-                                navbar: "goldenrod",
-                                date: "#000",
-                                list_container: "rgb(50,50,50)",
-                                list_of_contents_title: "rgb(255,255,255)", 
-                                list_of_contents: "gold",
-                                content_container: "#000",
-                                title: "rgb(255,255,255)",
-                                script_name: "rgb(255,255,255)",
-                                type: "red",
-                                name: "gold",
-                                description: "lightgray",
-                                param_type: "greenyellow",
-                                param_name: "gold",
-                                param_description: "darkgray"
-                            }
-                        }
-
-                        styles.name = path.basename(path.resolve("."))
-
-                        fs.writeFileSync('./crocodocs_prefs.json', JSON.stringify(styles, null, "\t"), 'utf-8')
-                    }
-
-                    fs.readFile('./crocodocs_prefs.json', {encoding: 'utf-8'}, function(err, data) {
-                        if (err) throw error
-
-                        const json = JSON.parse(data)
-
-                        newValue = newValue.replace("[PROJECT_NAME_TITLE]", json.name || projectName)
-
-                        newValue = newValue.replace("[PROJECT_NAME]", json.name || projectName)
-
-                        if(typeof json.colors === 'object' && json.colors != undefined) {
-                            let styles = fs.readFileSync('documentation/styles.css', 'utf-8')
-
-                            if(json.colors.navbar != undefined) {
-                                styles = styles.replace("/*navbar*/background-color: goldenrod", "/*navbar*/background-color: " + json.colors.navbar)
-                            }
-
-                            if(json.colors.date != undefined) {
-                                styles = styles.replace("/*date*/color: black", "/*date*/color: " + json.colors.date)
-                            }
-
-                            if(json.colors.list_container != undefined) {
-                                styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + json.colors.list_container)
-                            }
-
-                            if(json.colors.content_container != undefined) {
-                                styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + json.colors.content_container)
-                            }
-
-                            if(json.colors.title != undefined) {
-                                styles = styles.replace("/*title*/color: white", "/*title*/color: " + json.colors.title)
-                            }
-
-                            if(json.colors.list_of_contents_title != undefined) {
-                                styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + json.colors.list_of_contents_title)
-                            }
-
-                            if(json.colors.list_of_contents != undefined) {
-                                styles = styles.replace("/*list_of_contents*/color: gold", "/*list_of_contents*/color: " + json.colors.list_of_contents)
-                            }
-
-                            if(json.colors.script_name != undefined) {
-                                styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + json.colors.script_name)
-                            }
-
-                            if(json.colors.type != undefined) {
-                                styles = styles.replace("/*type*/color: red", "/*type*/color: " + json.colors.type)
-                            }
-
-                            if(json.colors.name != undefined) {
-                                styles = styles.replace("/*name*/color: gold", "/*name*/color: " + json.colors.name)
-                            }
-
-                            if(json.colors.description != undefined) {
-                                styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + json.colors.description)
-                            }
-
-                            if(json.colors.param_type != undefined) {
-                                styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + json.colors.param_type)
-                            }
-
-                            if(json.colors.param_name != undefined) {
-                                styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + json.colors.param_name)
-                            }
-
-                            if(json.colors.param_description!= undefined) {
-                                styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + json.colors.param_description)
-                            }
-
-                            fs.writeFileSync('documentation/styles.css', styles, 'utf-8')
-                        }
-
-                        fs.writeFileSync(fileName, newValue, 'utf-8')
-        
-                        open(fileName)
+                        SetupNewDocumentation()
                     })
                 })
-            })
+            } else {
+                SetupNewDocumentation()
+            }
         }
+    })
+}
+
+function SetupNewDocumentation() {
+    const fileName = 'crocodocs/documentation/index.html'
+
+    fs.copyFile(__dirname + '/resources/styles.css', 'crocodocs/documentation/styles.css', (err) => {
+        if (err) throw err
+        
+        fs.copyFile(__dirname + '/resources/documentation-source.html', fileName, (err) => {
+            if (err) throw err
+
+            let data = fs.readFileSync(fileName, 'utf-8')
+
+            let newValue = data.replace("var array = []", "var array = " + JSON.stringify(results, null, 4))
+
+            newValue = newValue.replace("[DATE]", (new Date()).toDateString())
+
+            if (!fs.existsSync('crocodocs/preferences.json')){
+                const styles = {
+                    colors: {
+                        navbar: "crimson",
+                        date: "#000",
+                        list_container: "rgb(50,50,50)",
+                        list_of_contents_title: "rgb(255,255,255)", 
+                        list_of_contents: "skyblue",
+                        content_container: "#000",
+                        title: "rgb(255,255,255)",
+                        script_name: "rgb(255,255,255)",
+                        type: "red",
+                        name: "gold",
+                        description: "lightgray",
+                        param_type: "greenyellow",
+                        param_name: "gold",
+                        param_description: "darkgray"
+                    }
+                }
+
+                styles.name = path.basename(path.resolve("."))
+
+                fs.writeFileSync('crocodocs/preferences.json', JSON.stringify(styles, null, "\t"), 'utf-8')
+            }
+
+            fs.readFile('crocodocs/preferences.json', {encoding: 'utf-8'}, function(err, data) {
+                if (err) throw error
+
+                const json = JSON.parse(data)
+
+                newValue = newValue.replace("[PROJECT_NAME_TITLE]", json.name || projectName)
+
+                newValue = newValue.replace("[PROJECT_NAME]", json.name || projectName)
+
+                if(typeof json.colors === 'object' && json.colors != undefined) {
+                    let styles = fs.readFileSync('crocodocs/documentation/styles.css', 'utf-8')
+
+                    if(json.colors.navbar != undefined) {
+                        styles = styles.replace("/*navbar*/background-color: crimson", "/*navbar*/background-color: " + json.colors.navbar)
+                    }
+
+                    if(json.colors.date != undefined) {
+                        styles = styles.replace("/*date*/color: black", "/*date*/color: " + json.colors.date)
+                    }
+
+                    if(json.colors.list_container != undefined) {
+                        styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + json.colors.list_container)
+                    }
+
+                    if(json.colors.content_container != undefined) {
+                        styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + json.colors.content_container)
+                    }
+
+                    if(json.colors.title != undefined) {
+                        styles = styles.replace("/*title*/color: white", "/*title*/color: " + json.colors.title)
+                    }
+
+                    if(json.colors.list_of_contents_title != undefined) {
+                        styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + json.colors.list_of_contents_title)
+                    }
+
+                    if(json.colors.list_of_contents != undefined) {
+                        styles = styles.replace("/*list_of_contents*/color: skyblue", "/*list_of_contents*/color: " + json.colors.list_of_contents)
+                    }
+
+                    if(json.colors.script_name != undefined) {
+                        styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + json.colors.script_name)
+                    }
+
+                    if(json.colors.type != undefined) {
+                        styles = styles.replace("/*type*/color: red", "/*type*/color: " + json.colors.type)
+                    }
+
+                    if(json.colors.name != undefined) {
+                        styles = styles.replace("/*name*/color: gold", "/*name*/color: " + json.colors.name)
+                    }
+
+                    if(json.colors.description != undefined) {
+                        styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + json.colors.description)
+                    }
+
+                    if(json.colors.param_type != undefined) {
+                        styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + json.colors.param_type)
+                    }
+
+                    if(json.colors.param_name != undefined) {
+                        styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + json.colors.param_name)
+                    }
+
+                    if(json.colors.param_description!= undefined) {
+                        styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + json.colors.param_description)
+                    }
+
+                    fs.writeFileSync('crocodocs/documentation/styles.css', styles, 'utf-8')
+                }
+
+                fs.writeFileSync(fileName, newValue, 'utf-8')
+
+                const chalk = require('chalk')
+
+                console.log(chalk.default.green("\nYour documentation has been created at ./crocodocs/documentation/index.html\n"))
+
+                setTimeout(() => open(fileName), 1500)
+            })
+        })
     })
 }
 
