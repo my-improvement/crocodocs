@@ -66,7 +66,7 @@ export default class HelloWorld extends React.Component {
 
 ### Exporting a documentation
 
-After done with commenting scripts, to export a documentation just run ```npx crocodocs create``` in command prompt / terminal at project's root path, your documentation should be opened directly after finish exporting, you can also find the file at PROJECT'S_ROOT_PATH/documentation/index.html
+After done with commenting scripts, to export a documentation just run ```npx crocodocs create``` in command prompt / terminal at project's root path, your documentation should be opened directly after finish exporting, you can also find the file at PROJECT'S_ROOT_PATH/crocodocs/documentation/index.html
 
 ### Result
 
@@ -99,3 +99,13 @@ If there is no ```preferences.json``` file in crocodocs folder in the project's 
 ```
 
 Run ```npx crocodocs create``` at project's root path in the command prompt / terminal again to get documentation with the latest preferences.
+
+### Removing caches
+
+If you want to delete all the documentation and preferences data run ```npx crocodocs clear-cache``` at project's root path folder in command prompt / terminal or simply delete the crocodocs folder.
+
+### Removing comments and caches
+
+To delete all comments (//des, //fun, //var, //param) and caches in the project run ```npx crocodocs erase-all``` at project's root path folder in command prompt / terminal.
+
+Make sure you have back up files if you want to revert it again.

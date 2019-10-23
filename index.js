@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 const commander = require('commander')
-const fs = require('fs')
+const inquirer = require('inquirer')
+const fs = require('fs-extra')
 const open = require('open')
 
 const results = []
@@ -16,6 +17,16 @@ commander
 .command('create')
 .description('Create the documentation')
 .action(() => create())
+
+commander
+.command('clear-cache')
+.description('Clear crocodocs caches')
+.action(() => clearCache())
+
+commander
+.command('erase-all')
+.description('Erase all user crocodocs comments in the project and clear all the caches')
+.action(() => eraseAll())
 
 commander.parse(process.argv)
 
@@ -257,7 +268,7 @@ function SetupNewDocumentation() {
 
                 console.log(chalk.default.green("\nYour documentation has been created at ./crocodocs/documentation/index.html\n"))
 
-                setTimeout(() => open(fileName), 1500)
+                open(fileName)
             })
         })
     })
@@ -316,4 +327,124 @@ function getListAllFilesPath(dirPath, files_) {
     }
 
     return files_
+}
+
+function clearCache() {
+    if (!fs.existsSync('crocodocs')) {
+        console.log('\nNothing to clear!\n')
+    } else {
+        console.log("")
+
+        inquirer.prompt([
+            {
+                name: "clearCacheValidation",
+                type: "list",
+                message: "Are you sure want to clear all the documentation caches?",
+                choices: [
+                    {
+                        value: "No"
+                    },
+                    {
+                        value: "Yes"
+                    }
+                ]
+            }
+        ])
+        .then(answers => {
+            if(answers.clearCacheValidation == "Yes") {
+                fs.removeSync('crocodocs')
+            
+                const chalk = require('chalk')
+
+                console.log(chalk.default.yellow("\nCaches cleared!\n"))
+            } else {
+                console.log("")
+            }
+        })
+    }
+}
+
+function eraseAll() {
+    console.log("")
+
+    inquirer.prompt([
+        {
+            name: "eraseAllValidation",
+            type: "list",
+            message: "Are you sure want to erase all crocodocs comments and caches in the current project folder?",
+            choices: [
+                {
+                    value: "No"
+                },
+                {
+                    value: "Yes"
+                }
+            ]
+        }
+    ])
+    .then(answers => {
+        if(answers.eraseAllValidation == "Yes") {
+            if (fs.existsSync('crocodocs')) {
+                fs.removeSync('crocodocs')   
+            }
+
+            const files = getAllFilesObject('.')
+
+            if(files.length > 0) {
+                readFileErase(files[files.length - 1])
+            }
+        } else {
+            console.log("")
+        }
+    })
+}
+
+function readFileErase(file) {
+    fs.readFile(file.path, {encoding: 'utf-8'}, function(err, data) {
+        if (err) throw error
+
+        if(file.path != "./index.js") { //DELETE THIS WHEN NOT TESTING
+            let lines = data.split('\n')
+
+            for(let i = 0; i < lines.length; i++) {
+                const lowercasedLine = lines[i].toLowerCase()
+
+                const isHavingData = lowercasedLine.includes("//des ") || lowercasedLine.includes("//fun ") || lowercasedLine.includes("//var ") || lowercasedLine.includes("//param ")
+                
+                if(isHavingData) {
+                    let comment = lines[i].split("//")[lines[i].split("//").length - 1]
+                    
+                    lines[i] = lines[i].replace(comment, "")
+
+                    lines[i] = lines[i].substring(0, lines[i].length - 3)
+
+                    if(lines[i].trim() == "") {
+                        lines[i] = "[CROCODOCS_EMPTY]"
+                    }
+                }
+            }
+
+            let originalLines = ""
+
+            for(let i = 0; i < lines.length; i++) {
+                if(lines[i] != "[CROCODOCS_EMPTY]") {
+                    originalLines += lines[i]
+
+                    if(i != lines.length - 1) {
+                        originalLines += "\n"
+                    }
+                }
+            }
+
+            fs.writeFileSync(file.path, originalLines, 'utf-8')
+        }
+
+        if(file.nextFile != null) {
+            readFileErase(file.nextFile)
+        } else {
+            const chalk = require('chalk')
+
+            console.log(chalk.default.yellow("\nErase all operation is done!\n"))
+        }
+    })
 }
