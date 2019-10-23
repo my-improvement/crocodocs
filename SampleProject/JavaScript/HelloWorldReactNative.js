@@ -8,7 +8,7 @@ import {
 } from "react-native"
 
 export default class HelloWorld extends React.Component {
-    textValue = "Hello Wo//rld" //VAR String; textValue; This variable contains a text that to be shown at the screen
+    textValue = "Hello World" //VAR String; textValue; This variable contains a text that to be shown at the screen
 
     render() {
         return (

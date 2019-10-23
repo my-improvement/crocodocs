@@ -112,4 +112,4 @@ Make sure you have back up files if you want to revert it again.
 
 ### Sample Project To Test
 
-You can find the sample project to test [here](https://github.com/reynaldpn/crocodocs/tree/master/SampleProject)
+You can find the sample project to test [here](https://github.com/reynaldpn/crocodocs/tree/master/SampleProject), if you want to test directly clone the github repository
