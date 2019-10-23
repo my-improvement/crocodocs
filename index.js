@@ -112,40 +112,46 @@ function readFile(file) {
         if(file.nextFile != null) {
             readFile(file.nextFile)
         } else {
-            const fs = require('fs')
+            if(results.length > 0) {
+                const fs = require('fs')
 
-            if (!fs.existsSync('crocodocs')){
-                fs.mkdirSync('crocodocs')
-            }
-
-            if (!fs.existsSync('crocodocs/documentation')){
-                fs.mkdirSync('crocodocs/documentation')
-            }
-
-            if (fs.existsSync('crocodocs/documentation/index.html') && fs.existsSync('crocodocs/documentation/styles.css')){
-                if (!fs.existsSync('crocodocs/old_documentation')){
-                    fs.mkdirSync('crocodocs/old_documentation')
+                if (!fs.existsSync('crocodocs')){
+                    fs.mkdirSync('crocodocs')
                 }
 
-                let revisionNumber = 1
-
-                while(fs.existsSync('crocodocs/old_documentation/' + revisionNumber.toString())) {
-                    ++revisionNumber
+                if (!fs.existsSync('crocodocs/documentation')){
+                    fs.mkdirSync('crocodocs/documentation')
                 }
 
-                fs.mkdirSync('crocodocs/old_documentation/' + revisionNumber.toString())
+                if (fs.existsSync('crocodocs/documentation/index.html') && fs.existsSync('crocodocs/documentation/styles.css')){
+                    if (!fs.existsSync('crocodocs/old_documentation')){
+                        fs.mkdirSync('crocodocs/old_documentation')
+                    }
 
-                fs.rename('crocodocs/documentation/index.html', 'crocodocs/old_documentation/' + revisionNumber.toString() + '/index.html', (err) => {
-                    if (err) throw err
+                    let revisionNumber = 1
 
-                    fs.rename('crocodocs/documentation/styles.css', 'crocodocs/old_documentation/' + revisionNumber.toString() + '/styles.css', (err) => {
+                    while(fs.existsSync('crocodocs/old_documentation/' + revisionNumber.toString())) {
+                        ++revisionNumber
+                    }
+
+                    fs.mkdirSync('crocodocs/old_documentation/' + revisionNumber.toString())
+
+                    fs.rename('crocodocs/documentation/index.html', 'crocodocs/old_documentation/' + revisionNumber.toString() + '/index.html', (err) => {
                         if (err) throw err
 
-                        SetupNewDocumentation()
+                        fs.rename('crocodocs/documentation/styles.css', 'crocodocs/old_documentation/' + revisionNumber.toString() + '/styles.css', (err) => {
+                            if (err) throw err
+
+                            SetupNewDocumentation()
+                        })
                     })
-                })
+                } else {
+                    SetupNewDocumentation()
+                }
             } else {
-                SetupNewDocumentation()
+                const chalk = require('chalk')
+
+                console.log(chalk.default.yellow("\nNo data found to be documented, nothing changes!\n"))
             }
         }
     })
