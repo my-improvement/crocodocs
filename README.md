@@ -2,6 +2,10 @@
 
 Cutting the complexity in the making of a documentation
 
+This package allows you to convert unique comments to interactive HTML documentation document
+
+![alt text](https://raw.githubusercontent.com/reynaldpn/crocodocs/master/screenshots/1.png)
+
 ### Installation
 
 You only need [Node.js](https://nodejs.org/en/) to run this package
@@ -67,10 +71,6 @@ export default class HelloWorld extends React.Component {
 ### Exporting a documentation
 
 After done with commenting scripts, to export a documentation just run ```npx crocodocs create``` in command prompt / terminal at project's root path, your documentation should be opened directly after finish exporting, you can also find the file at PROJECT'S_ROOT_PATH/crocodocs/documentation/index.html
-
-### Result
-
-![alt text](https://raw.githubusercontent.com/reynaldpn/crocodocs/master/screenshots/1.png)
 
 ### Customizing documentation preferences
 
