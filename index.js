@@ -42,7 +42,7 @@ function readFile(file) {
     fs.readFile(file.path, {encoding: 'utf-8'}, function(err, data) {
         if (err) throw error
 
-        if(file.path != "./index.js") { //DELETE THIS WHEN NOT TESTING
+        //if(file.path != "./index.js") { //DELETE THIS WHEN NOT TESTING
             let lines = data.split('\n')
 
             for(let i = 0; i < lines.length; i++) {
@@ -107,7 +107,7 @@ function readFile(file) {
                     }
                 }
             }
-        }
+        //}
 
         if(file.nextFile != null) {
             readFile(file.nextFile)
@@ -403,7 +403,7 @@ function readFileErase(file) {
     fs.readFile(file.path, {encoding: 'utf-8'}, function(err, data) {
         if (err) throw error
 
-        if(file.path != "./index.js") { //DELETE THIS WHEN NOT TESTING
+        //if(file.path != "./index.js") { //DELETE THIS WHEN NOT TESTING
             let lines = data.split('\n')
 
             for(let i = 0; i < lines.length; i++) {
@@ -437,7 +437,7 @@ function readFileErase(file) {
             }
 
             fs.writeFileSync(file.path, originalLines, 'utf-8')
-        }
+        //}
 
         if(file.nextFile != null) {
             readFileErase(file.nextFile)
