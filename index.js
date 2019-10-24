@@ -19,6 +19,11 @@ commander
 .action(() => create())
 
 commander
+.command('create-replace')
+.description('Create the documentation with replacing recent documentation')
+.action(() => createReplace())
+
+commander
 .command('clear-cache')
 .description('Clear crocodocs caches')
 .action(() => clearCache())
@@ -500,4 +505,10 @@ function readFileErase(file) {
             console.log(chalk.default.yellow("\nErase all operation is done!\n"))
         }
     })
+}
+
+function createReplace() {
+    fs.removeSync('crocodocs/documentation')
+
+    create()
 }
