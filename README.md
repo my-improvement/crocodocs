@@ -105,6 +105,49 @@ If there is no ```preferences.json``` file in crocodocs folder in the project's 
 
 Run ```npx crocodocs create``` at project's root path in the command prompt / terminal again to get documentation with the latest preferences.
 
+### Adding beginning header, text and list
+
+You can add header, text and list add the beginning of the documentation, edit beginning.json (it will created after the first ```npx crocodocs create```) or create manually.
+
+The format should be like this
+
+```
+[
+    {
+        type: "header",
+        value: "Example Header 1"
+    },
+    {
+        type: "text",
+        value: "This is the description of description 1"
+    },
+    {
+        type: "list",
+        value: [
+            "item 1",
+            "item 2"
+        ]
+    },
+    {
+        type: "header",
+        value: "Example Header 2"
+    },
+    {
+        type: "text",
+        value: "This is the description of description 2"
+    },
+    {
+        type: "list",
+        value: [
+            "item 1",
+            "item 2"
+        ]
+    }
+]
+```
+
+You can have as many as you want of headers, texts and lists in the order you like
+
 ### Removing caches
 
 If you want to delete all the documentation and preferences data run ```npx crocodocs clear-cache``` at project's root path folder in command prompt / terminal or simply delete the crocodocs folder.
