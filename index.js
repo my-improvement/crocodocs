@@ -190,7 +190,8 @@ function SetupNewDocumentation() {
                         param_type: "greenyellow",
                         param_name: "gold",
                         param_description: "darkgray"
-                    }
+                    },
+                    font_family: "'Lucida Console', Monaco, monospace"
                 }
 
                 styles.name = path.basename(path.resolve("."))
@@ -203,73 +204,83 @@ function SetupNewDocumentation() {
 
                 const json = JSON.parse(data)
 
+                let projectName = path.basename(path.resolve("."))
+
                 newValue = newValue.replace("[PROJECT_NAME_TITLE]", json.name || projectName)
 
                 newValue = newValue.replace("[PROJECT_NAME]", json.name || projectName)
 
-                if(typeof json.colors === 'object' && json.colors != undefined) {
+                if(typeof json.colors === 'object') {
                     let styles = fs.readFileSync('crocodocs/documentation/styles.css', 'utf-8')
+
+                    let fontFamily = json.font_family
+
+                    if(fontFamily != undefined) {
+                        styles = styles.replace("/*font_family*/font-family: 'Lucida Console', Monaco, monospace", "/*font_family*/font-family: " + fontFamily)
+                    }
 
                     const colors = json.colors
 
-                    if(colors.navbar != undefined) {
-                        styles = styles.replace("/*navbar*/background-color: crimson", "/*navbar*/background-color: " + colors.navbar)
-                    }
-
-                    if(colors.date != undefined) {
-                        styles = styles.replace("/*date*/color: black", "/*date*/color: " + colors.date)
-                    }
-
-                    if(colors.list_container != undefined) {
-                        styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + colors.list_container)
-                    }
-
-                    if(colors.content_container != undefined) {
-                        styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + colors.content_container)
-                    }
-
-                    if(colors.title != undefined) {
-                        styles = styles.replace("/*title*/color: white", "/*title*/color: " + colors.title)
-                    }
-
-                    if(colors.list_of_contents_title != undefined) {
-                        styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + colors.list_of_contents_title)
-                    }
-
-                    if(colors.list_of_contents != undefined) {
-                        styles = styles.replace("/*list_of_contents*/color: skyblue", "/*list_of_contents*/color: " + colors.list_of_contents)
-                    }
-
-                    if(colors.folder != undefined) {
-                        styles = styles.replace("/*folder*/color:gainsboro", "/*folder*/color: " + colors.folder)
-                    }
-
-                    if(colors.script_name != undefined) {
-                        styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + colors.script_name)
-                    }
-
-                    if(colors.type != undefined) {
-                        styles = styles.replace("/*type*/color: red", "/*type*/color: " + colors.type)
-                    }
-
-                    if(colors.name != undefined) {
-                        styles = styles.replace("/*name*/color: gold", "/*name*/color: " + colors.name)
-                    }
-
-                    if(colors.description != undefined) {
-                        styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + colors.description)
-                    }
-
-                    if(colors.param_type != undefined) {
-                        styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + colors.param_type)
-                    }
-
-                    if(colors.param_name != undefined) {
-                        styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + colors.param_name)
-                    }
-
-                    if(colors.param_description!= undefined) {
-                        styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + colors.param_description)
+                    if(colors != undefined) {
+                        if(colors.navbar != undefined) {
+                            styles = styles.replace("/*navbar*/background-color: crimson", "/*navbar*/background-color: " + colors.navbar)
+                        }
+    
+                        if(colors.date != undefined) {
+                            styles = styles.replace("/*date*/color: black", "/*date*/color: " + colors.date)
+                        }
+    
+                        if(colors.list_container != undefined) {
+                            styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + colors.list_container)
+                        }
+    
+                        if(colors.content_container != undefined) {
+                            styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + colors.content_container)
+                        }
+    
+                        if(colors.title != undefined) {
+                            styles = styles.replace("/*title*/color: white", "/*title*/color: " + colors.title)
+                        }
+    
+                        if(colors.list_of_contents_title != undefined) {
+                            styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + colors.list_of_contents_title)
+                        }
+    
+                        if(colors.list_of_contents != undefined) {
+                            styles = styles.replace("/*list_of_contents*/color: skyblue", "/*list_of_contents*/color: " + colors.list_of_contents)
+                        }
+    
+                        if(colors.folder != undefined) {
+                            styles = styles.replace("/*folder*/color:gainsboro", "/*folder*/color: " + colors.folder)
+                        }
+    
+                        if(colors.script_name != undefined) {
+                            styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + colors.script_name)
+                        }
+    
+                        if(colors.type != undefined) {
+                            styles = styles.replace("/*type*/color: red", "/*type*/color: " + colors.type)
+                        }
+    
+                        if(colors.name != undefined) {
+                            styles = styles.replace("/*name*/color: gold", "/*name*/color: " + colors.name)
+                        }
+    
+                        if(colors.description != undefined) {
+                            styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + colors.description)
+                        }
+    
+                        if(colors.param_type != undefined) {
+                            styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + colors.param_type)
+                        }
+    
+                        if(colors.param_name != undefined) {
+                            styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + colors.param_name)
+                        }
+    
+                        if(colors.param_description!= undefined) {
+                            styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + colors.param_description)
+                        }
                     }
 
                     fs.writeFileSync('crocodocs/documentation/styles.css', styles, 'utf-8')

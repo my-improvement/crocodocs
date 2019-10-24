@@ -74,11 +74,11 @@ After done with commenting scripts, to export a documentation just run ```npx cr
 
 ### Customizing documentation preferences
 
-If there is no ```preferences.json``` file in crocodocs folder in the project's root path, the file will be created right before processing the making of the documentation. This file contains name and colors (in web color format) preferences you can edit as you want anyway.
+If there is no ```preferences.json``` file in crocodocs folder in the project's root path, the file will be created right before processing the making of the documentation. This file contains colors (in web color format), font family to be used and project name to be displayed preferences that you can edit as you want anyway.
 
 ```
 {
-    "colors": {
+    colors: {
         navbar: "crimson",
         date: "#000",
         list_container: "rgb(50,50,50)",
@@ -95,7 +95,8 @@ If there is no ```preferences.json``` file in crocodocs folder in the project's 
         param_name: "gold",
         param_description: "darkgray"
     },
-	"name": "ProjectName"
+    font_family: "'Lucida Console', Monaco, monospace",
+	name: "ProjectName"
 }
 ```
 

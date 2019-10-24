@@ -3,7 +3,7 @@ body {
 }
 
 p {
-    font-family: "Lucida Console", Monaco, monospace;
+    /*font_family*/font-family: 'Lucida Console', Monaco, monospace;
 }
 
 .navbar {
@@ -28,7 +28,6 @@ p {
     font-size: 18px;
     /*date*/color: black;
     margin-top: 30px;
-    font-family: "Lucida Console", Monaco, monospace;
 }
 
 #side-nav {
@@ -43,7 +42,6 @@ p {
 
 .list_of_contents {
     /*list_of_contents_title*/color: white;
-    font-family: "Lucida Console", Monaco, monospace;
     font-size: 18px;
     margin-top: 0px;
     /* margin-top: -60px; */
