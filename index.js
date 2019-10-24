@@ -179,6 +179,7 @@ function SetupNewDocumentation() {
                         date: "#000",
                         list_container: "rgb(50,50,50)",
                         list_of_contents_title: "rgb(255,255,255)", 
+                        folder: "gainsboro",
                         list_of_contents: "skyblue",
                         content_container: "#000",
                         title: "rgb(255,255,255)",
@@ -209,60 +210,66 @@ function SetupNewDocumentation() {
                 if(typeof json.colors === 'object' && json.colors != undefined) {
                     let styles = fs.readFileSync('crocodocs/documentation/styles.css', 'utf-8')
 
-                    if(json.colors.navbar != undefined) {
-                        styles = styles.replace("/*navbar*/background-color: crimson", "/*navbar*/background-color: " + json.colors.navbar)
+                    const colors = json.colors
+
+                    if(colors.navbar != undefined) {
+                        styles = styles.replace("/*navbar*/background-color: crimson", "/*navbar*/background-color: " + colors.navbar)
                     }
 
-                    if(json.colors.date != undefined) {
-                        styles = styles.replace("/*date*/color: black", "/*date*/color: " + json.colors.date)
+                    if(colors.date != undefined) {
+                        styles = styles.replace("/*date*/color: black", "/*date*/color: " + colors.date)
                     }
 
-                    if(json.colors.list_container != undefined) {
-                        styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + json.colors.list_container)
+                    if(colors.list_container != undefined) {
+                        styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + colors.list_container)
                     }
 
-                    if(json.colors.content_container != undefined) {
-                        styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + json.colors.content_container)
+                    if(colors.content_container != undefined) {
+                        styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + colors.content_container)
                     }
 
-                    if(json.colors.title != undefined) {
-                        styles = styles.replace("/*title*/color: white", "/*title*/color: " + json.colors.title)
+                    if(colors.title != undefined) {
+                        styles = styles.replace("/*title*/color: white", "/*title*/color: " + colors.title)
                     }
 
-                    if(json.colors.list_of_contents_title != undefined) {
-                        styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + json.colors.list_of_contents_title)
+                    if(colors.list_of_contents_title != undefined) {
+                        styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + colors.list_of_contents_title)
                     }
 
-                    if(json.colors.list_of_contents != undefined) {
-                        styles = styles.replace("/*list_of_contents*/color: skyblue", "/*list_of_contents*/color: " + json.colors.list_of_contents)
+                    if(colors.list_of_contents != undefined) {
+                        styles = styles.replace("/*list_of_contents*/color: skyblue", "/*list_of_contents*/color: " + colors.list_of_contents)
                     }
 
-                    if(json.colors.script_name != undefined) {
-                        styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + json.colors.script_name)
+                    if(colors.folder != undefined) {
+                        styles = styles.replace("/*folder*/color:gainsboro", "/*folder*/color: " + colors.folder)
                     }
 
-                    if(json.colors.type != undefined) {
-                        styles = styles.replace("/*type*/color: red", "/*type*/color: " + json.colors.type)
+                    if(colors.script_name != undefined) {
+                        styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + colors.script_name)
                     }
 
-                    if(json.colors.name != undefined) {
-                        styles = styles.replace("/*name*/color: gold", "/*name*/color: " + json.colors.name)
+                    if(colors.type != undefined) {
+                        styles = styles.replace("/*type*/color: red", "/*type*/color: " + colors.type)
                     }
 
-                    if(json.colors.description != undefined) {
-                        styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + json.colors.description)
+                    if(colors.name != undefined) {
+                        styles = styles.replace("/*name*/color: gold", "/*name*/color: " + colors.name)
                     }
 
-                    if(json.colors.param_type != undefined) {
-                        styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + json.colors.param_type)
+                    if(colors.description != undefined) {
+                        styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + colors.description)
                     }
 
-                    if(json.colors.param_name != undefined) {
-                        styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + json.colors.param_name)
+                    if(colors.param_type != undefined) {
+                        styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + colors.param_type)
                     }
 
-                    if(json.colors.param_description!= undefined) {
-                        styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + json.colors.param_description)
+                    if(colors.param_name != undefined) {
+                        styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + colors.param_name)
+                    }
+
+                    if(colors.param_description!= undefined) {
+                        styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + colors.param_description)
                     }
 
                     fs.writeFileSync('crocodocs/documentation/styles.css', styles, 'utf-8')

@@ -1,0 +1,20 @@
+{
+	"colors": {
+		"navbar": "crimson",
+		"date": "#000",
+		"list_container": "rgb(50,50,50)",
+		"list_of_contents_title": "rgb(255,255,255)",
+		"folder": "gainsboro",
+		"list_of_contents": "skyblue",
+		"content_container": "#000",
+		"title": "rgb(255,255,255)",
+		"script_name": "rgb(255,255,255)",
+		"type": "red",
+		"name": "gold",
+		"description": "lightgray",
+		"param_type": "greenyellow",
+		"param_name": "gold",
+		"param_description": "darkgray"
+	},
+	"name": "SampleProject"
+}

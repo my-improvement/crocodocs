@@ -17,7 +17,7 @@ p {
 }
 
 .title {
-    /*title*/color: white;
+    /*title*/color: rgb(255,255,255);
     font-size: 24px;
     margin-left: 20px;
 }
@@ -26,7 +26,7 @@ p {
     float: right;
     margin-right: 50px;
     font-size: 18px;
-    /*date*/color: black;
+    /*date*/color: #000;
     margin-top: 30px;
     font-family: "Lucida Console", Monaco, monospace;
 }
@@ -37,12 +37,12 @@ p {
     height:100vh;
     overflow-y: scroll;
     padding: 30px;
-    /*list_container*/background-color:rgb(50,50,50);
+    /*list_container*/background-color: rgb(50,50,50);
     top: 100px;
 }
 
 .list_of_contents {
-    /*list_of_contents_title*/color: white;
+    /*list_of_contents_title*/color: rgb(255,255,255);
     font-family: "Lucida Console", Monaco, monospace;
     font-size: 18px;
     margin-top: 0px;
@@ -50,7 +50,7 @@ p {
 }
 
 .folder {
-    /*folder*/color:gainsboro;
+    /*folder*/color: gainsboro;
     font-size: 12px;
     margin-top: 20px;
 }
@@ -80,11 +80,11 @@ p {
     top: 0;
     right: 0;
     height:100vh;
-    /*content_container*/background-color:#000;
+    /*content_container*/background-color: #000;
 }
 
 .script_name {
-    /*script_name*/color: white;
+    /*script_name*/color: rgb(255,255,255);
     font-size: 24px;
     font-weight: bolder;
     margin-top: 0px;

@@ -83,6 +83,7 @@ If there is no ```preferences.json``` file in crocodocs folder in the project's 
         date: "#000",
         list_container: "rgb(50,50,50)",
         list_of_contents_title: "rgb(255,255,255)", 
+        folder: "gainsboro",
         list_of_contents: "skyblue",
         content_container: "#000",
         title: "rgb(255,255,255)",

@@ -49,13 +49,49 @@
 
         <script>
             var array = []
-
+            
             let listHtml = ''
 
             for (const index in array) {
                 const id = "#script" + index
-                
-                listHtml += '<a href="' + id + '"><p class="script_link">' + array[index].filePath + '</p></a>'
+
+                let pathSections = array[index].filePath.split('/')
+
+                for(const pathIndex in pathSections) {
+                    if(pathIndex > 0) {
+                        let previousPathSections = []
+
+                        if(index > 0) {
+                            previousPathSections = array[index - 1].filePath.split('/')
+                        }
+
+                        if(previousPathSections.length - 1 >= pathIndex) {
+                            console.log(previousPathSections[pathIndex] + " - " + pathSections[pathIndex])
+                            
+                            if(previousPathSections[pathIndex] == pathSections[pathIndex]) {
+                                continue
+                            }
+                        }
+                        
+                        if(pathIndex != pathSections.length - 1) {
+                            listHtml += '<p class="folder">'
+
+                            for(let i = 1; i < pathIndex; i++) {
+                                listHtml += "&nbsp;&nbsp;&nbsp;&nbsp;"
+                            }
+
+                            listHtml += pathSections[pathIndex] + '</p>'
+                        } else {
+                            listHtml += '<a class="script_link_wrapper" href="' + id + '"><p class="script_link">'
+                        
+                            for(let i = 1; i < pathIndex; i++) {
+                                listHtml += "&nbsp;&nbsp;&nbsp;&nbsp;"
+                            }
+
+                            listHtml += pathSections[pathIndex] + '</p></a>'
+                        }
+                    }
+                }
             }
 
             document.getElementById('lists').innerHTML = listHtml
