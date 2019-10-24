@@ -168,7 +168,7 @@ function SetupNewDocumentation() {
 
             let data = fs.readFileSync(fileName, 'utf-8')
 
-            let newValue = data.replace("var array = []", "var array = " + JSON.stringify(results, null, 4))
+            let newValue = data.replace("const array = []", "const array = " + JSON.stringify(results, null, 4))
 
             newValue = newValue.replace("[DATE]", (new Date()).toDateString())
 
@@ -176,13 +176,16 @@ function SetupNewDocumentation() {
                 const styles = {
                     colors: {
                         navbar: "crimson",
+                        title: "rgb(255,255,255)",
                         date: "#000",
                         list_container: "rgb(50,50,50)",
                         list_of_contents_title: "rgb(255,255,255)", 
+                        side_nav_link: "aquamarine",
                         folder: "gainsboro",
-                        list_of_contents: "skyblue",
                         content_container: "#000",
-                        title: "rgb(255,255,255)",
+                        beginning_header: "white",
+                        beginning_text: "gainsboro",
+                        beginning_list: "gainsboro",
                         script_name: "rgb(255,255,255)",
                         type: "red",
                         name: "gold",
@@ -199,106 +202,132 @@ function SetupNewDocumentation() {
                 fs.writeFileSync('crocodocs/preferences.json', JSON.stringify(styles, null, "\t"), 'utf-8')
             }
 
-            fs.readFile('crocodocs/preferences.json', {encoding: 'utf-8'}, function(err, data) {
+            if (!fs.existsSync('crocodocs/beginning.json')){
+                fs.writeFileSync('crocodocs/beginning.json', "[]", 'utf-8')
+            }
+
+            fs.readFile('crocodocs/beginning.json', {encoding: 'utf-8'}, function(err, data) {
                 if (err) throw error
 
-                const json = JSON.parse(data)
+                const beginning = JSON.parse(data)
 
-                let projectName = path.basename(path.resolve("."))
+                newValue = newValue.replace("const beginning = []", "const beginning = " + JSON.stringify(beginning, null, 4))
 
-                newValue = newValue.replace("[PROJECT_NAME_TITLE]", json.name || projectName)
+                fs.readFile('crocodocs/preferences.json', {encoding: 'utf-8'}, function(err, data) {
+                    if (err) throw error
 
-                newValue = newValue.replace("[PROJECT_NAME]", json.name || projectName)
+                    const json = JSON.parse(data)
 
-                if(typeof json.colors === 'object') {
-                    let styles = fs.readFileSync('crocodocs/documentation/styles.css', 'utf-8')
+                    let projectName = path.basename(path.resolve("."))
 
-                    let fontFamily = json.font_family
+                    newValue = newValue.replace("[PROJECT_NAME_TITLE]", json.name || projectName)
 
-                    if(fontFamily != undefined) {
-                        styles = styles.replace("/*font_family*/font-family: 'Lucida Console', Monaco, monospace", "/*font_family*/font-family: " + fontFamily)
+                    newValue = newValue.replace("[PROJECT_NAME]", json.name || projectName)
+
+                    if(typeof json.colors === 'object') {
+                        let styles = fs.readFileSync('crocodocs/documentation/styles.css', 'utf-8')
+
+                        let fontFamily = json.font_family
+
+                        if(fontFamily != undefined) {
+                            styles = styles.replace("/*font_family*/font-family: 'Lucida Console', Monaco, monospace", "/*font_family*/font-family: " + fontFamily)
+                        }
+
+                        const colors = json.colors
+
+                        if(colors != undefined) {
+                            if(colors.navbar != undefined) {
+                                styles = styles.replace("/*navbar*/background-color: crimson", "/*navbar*/background-color: " + colors.navbar)
+                            }
+        
+                            if(colors.title != undefined) {
+                                styles = styles.replace("/*title*/color: white", "/*title*/color: " + colors.title)
+                            }
+
+                            if(colors.date != undefined) {
+                                styles = styles.replace("/*date*/color: black", "/*date*/color: " + colors.date)
+                            }
+        
+                            if(colors.list_container != undefined) {
+                                styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + colors.list_container)
+                            }
+        
+                            if(colors.content_container != undefined) {
+                                styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + colors.content_container)
+                            }
+        
+                            if(colors.list_of_contents_title != undefined) {
+                                styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + colors.list_of_contents_title)
+                            }
+        
+                            if(colors.side_nav_link != undefined) {
+                                styles = styles.replace("/*side_nav_link*/color: aquamarine", "/*side_nav_link*/color: " + colors.side_nav_link)
+                            }
+        
+                            if(colors.folder != undefined) {
+                                styles = styles.replace("/*folder*/color:gainsboro", "/*folder*/color: " + colors.folder)
+                            }
+
+                            if(colors.beginning_header != undefined) {
+                                styles = styles.replace("/*beginning_header*/color: white", "/*beginning_header*/color: " + colors.beginning_header)
+                            }
+
+                            if(colors.beginning_text != undefined) {
+                                styles = styles.replace("/*beginning_text*/color: gainsboro", "/*beginning_text*/color: " + colors.beginning_text)
+                            }
+
+                            if(colors.beginning_list != undefined) {
+                                styles = styles.replace("/*beginning_list*/color: gainsboro", "/*beginning_list*/color: " + colors.beginning_list)
+                            }
+        
+                            if(colors.script_name != undefined) {
+                                styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + colors.script_name)
+                            }
+        
+                            if(colors.type != undefined) {
+                                styles = styles.replace("/*type*/color: red", "/*type*/color: " + colors.type)
+                            }
+        
+                            if(colors.name != undefined) {
+                                styles = styles.replace("/*name*/color: gold", "/*name*/color: " + colors.name)
+                            }
+        
+                            if(colors.description != undefined) {
+                                styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + colors.description)
+                            }
+        
+                            if(colors.param_type != undefined) {
+                                styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + colors.param_type)
+                            }
+        
+                            if(colors.param_name != undefined) {
+                                styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + colors.param_name)
+                            }
+        
+                            if(colors.param_description!= undefined) {
+                                styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + colors.param_description)
+                            }
+                        }
+
+                        fs.writeFileSync('crocodocs/documentation/styles.css', styles, 'utf-8')
                     }
 
-                    const colors = json.colors
+                    fs.writeFileSync(fileName, newValue, 'utf-8')
 
-                    if(colors != undefined) {
-                        if(colors.navbar != undefined) {
-                            styles = styles.replace("/*navbar*/background-color: crimson", "/*navbar*/background-color: " + colors.navbar)
-                        }
-    
-                        if(colors.date != undefined) {
-                            styles = styles.replace("/*date*/color: black", "/*date*/color: " + colors.date)
-                        }
-    
-                        if(colors.list_container != undefined) {
-                            styles = styles.replace("/*list_container*/background-color:rgb(50,50,50)", "/*list_container*/background-color: " + colors.list_container)
-                        }
-    
-                        if(colors.content_container != undefined) {
-                            styles = styles.replace("/*content_container*/background-color:#000", "/*content_container*/background-color: " + colors.content_container)
-                        }
-    
-                        if(colors.title != undefined) {
-                            styles = styles.replace("/*title*/color: white", "/*title*/color: " + colors.title)
-                        }
-    
-                        if(colors.list_of_contents_title != undefined) {
-                            styles = styles.replace("/*list_of_contents_title*/color: white", "/*list_of_contents_title*/color: " + colors.list_of_contents_title)
-                        }
-    
-                        if(colors.list_of_contents != undefined) {
-                            styles = styles.replace("/*list_of_contents*/color: skyblue", "/*list_of_contents*/color: " + colors.list_of_contents)
-                        }
-    
-                        if(colors.folder != undefined) {
-                            styles = styles.replace("/*folder*/color:gainsboro", "/*folder*/color: " + colors.folder)
-                        }
-    
-                        if(colors.script_name != undefined) {
-                            styles = styles.replace("/*script_name*/color: white", "/*script_name*/color: " + colors.script_name)
-                        }
-    
-                        if(colors.type != undefined) {
-                            styles = styles.replace("/*type*/color: red", "/*type*/color: " + colors.type)
-                        }
-    
-                        if(colors.name != undefined) {
-                            styles = styles.replace("/*name*/color: gold", "/*name*/color: " + colors.name)
-                        }
-    
-                        if(colors.description != undefined) {
-                            styles = styles.replace("/*description*/color: lightgray", "/*description*/color: " + colors.description)
-                        }
-    
-                        if(colors.param_type != undefined) {
-                            styles = styles.replace("/*param_type*/color: greenyellow", "/*param_type*/color: " + colors.param_type)
-                        }
-    
-                        if(colors.param_name != undefined) {
-                            styles = styles.replace("/*param_name*/color: gold", "/*param_name*/color: " + colors.param_name)
-                        }
-    
-                        if(colors.param_description!= undefined) {
-                            styles = styles.replace("/*param_description*/color: darkgray", "/*param_description*/color: " + colors.param_description)
-                        }
-                    }
+                    const chalk = require('chalk')
 
-                    fs.writeFileSync('crocodocs/documentation/styles.css', styles, 'utf-8')
-                }
+                    console.log(chalk.default.green("\nYour documentation has been created at ./crocodocs/documentation/index.html\n"))
 
-                fs.writeFileSync(fileName, newValue, 'utf-8')
-
-                const chalk = require('chalk')
-
-                console.log(chalk.default.green("\nYour documentation has been created at ./crocodocs/documentation/index.html\n"))
-
-                open(fileName)
+                    open(fileName)
+                })
             })
         })
     })
 }
 
-function GetNameTypeAndDescription(line) {
+function GetNameTypeAndDescription(theLine) {
+    let line = theLine.split("//")[theLine.split("//").length - 1]
+
     const splittedText = line.split(';')
 
     const typeString = splittedText[0].trim()

@@ -48,9 +48,17 @@
         </div>
 
         <script>
-            var array = []
+            const array = []
             
             let listHtml = ''
+
+            const beginning = []
+
+            for(const index in beginning) {
+                if(beginning[index].type == "header") {
+                    listHtml += '<a class="script_link_wrapper" href="#header' + index.toString() + '"><p class="side_nav_link">' + beginning[index].value + '</p></a>'
+                }
+            }
 
             for (const index in array) {
                 const id = "#script" + index
@@ -59,17 +67,13 @@
 
                 for(const pathIndex in pathSections) {
                     if(pathIndex > 0) {
-                        let previousPathSections = []
-
                         if(index > 0) {
-                            previousPathSections = array[index - 1].filePath.split('/')
-                        }
+                            let previousPathSections = array[index - 1].filePath.split('/')
 
-                        if(previousPathSections.length - 1 >= pathIndex) {
-                            console.log(previousPathSections[pathIndex] + " - " + pathSections[pathIndex])
-                            
-                            if(previousPathSections[pathIndex] == pathSections[pathIndex]) {
-                                continue
+                            if(previousPathSections.length - 1 >= pathIndex) {
+                                if(previousPathSections[pathIndex] == pathSections[pathIndex]) {
+                                    continue
+                                }
                             }
                         }
                         
@@ -82,7 +86,7 @@
 
                             listHtml += pathSections[pathIndex] + '</p>'
                         } else {
-                            listHtml += '<a class="script_link_wrapper" href="' + id + '"><p class="script_link">'
+                            listHtml += '<a class="script_link_wrapper" href="' + id + '"><p class="side_nav_link">'
                         
                             for(let i = 1; i < pathIndex; i++) {
                                 listHtml += "&nbsp;&nbsp;&nbsp;&nbsp;"
@@ -97,6 +101,22 @@
             document.getElementById('lists').innerHTML = listHtml
 
             let html = ''
+
+            for(const index in beginning) {
+                if(beginning[index].type == "list") {
+                    html += '<ul>'
+
+                    for(const value of beginning[index].value) {
+                        html += '<li class="beginning_list"><p>' + value + '</p></li>'
+                    }
+
+                    html += '</ul>'
+                } else if(beginning[index].type == "header") {
+                    html += '<p class="beginning_header" id="header' + index.toString() + '">' + beginning[index].value + '</p>'
+                } else if(beginning[index].type == "text") {
+                    html += '<p class="beginning_text">' + beginning[index].value + '</p>'
+                }
+            }
 
             for (const index in array) {
                 html += '<p class="script_name" id=script' + index + '>' + array[index].filePath.split("/")[array[index].filePath.split("/").length - 1] + '</p>'

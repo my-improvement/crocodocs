@@ -32,7 +32,7 @@ p {
 
 #side-nav {
     position: fixed;
-    width: 350px;
+    width: 300px;
     height:100vh;
     overflow-y: scroll;
     padding: 30px;
@@ -44,7 +44,6 @@ p {
     /*list_of_contents_title*/color: white;
     font-size: 18px;
     margin-top: 0px;
-    /* margin-top: -60px; */
 }
 
 .folder {
@@ -57,8 +56,8 @@ p {
     text-decoration: none;
 }
 
-.script_link {
-    /*list_of_contents*/color: skyblue;
+.side_nav_link {
+    /*side_nav_link*/color: aquamarine;
     font-size: 12px;
     margin-top: 20px;
     width: 290px;
@@ -70,7 +69,7 @@ p {
 }
 
 #content-wrapper {
-    margin: 100px 0 0 350px;
+    margin: 100px 0 0 300px;
     padding: 0 30px;
     overflow-y: scroll;
     position: fixed;
@@ -79,6 +78,22 @@ p {
     right: 0;
     height:100vh;
     /*content_container*/background-color:#000;
+}
+
+.beginning_header {
+    /*beginning_header*/color: white;
+    font-size: 24px;
+    font-weight: bolder;
+    margin-top: 0px;
+    padding-top: 30px;
+}
+
+.beginning_text {
+    /*beginning_text*/color: gainsboro;
+}
+
+.beginning_list {
+    /*beginning_list*/color: gainsboro;
 }
 
 .script_name {

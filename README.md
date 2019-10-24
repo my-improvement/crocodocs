@@ -80,13 +80,16 @@ If there is no ```preferences.json``` file in crocodocs folder in the project's 
 {
     colors: {
         navbar: "crimson",
+        title: "rgb(255,255,255)",
         date: "#000",
         list_container: "rgb(50,50,50)",
         list_of_contents_title: "rgb(255,255,255)", 
+        side_nav_link: "aquamarine",
         folder: "gainsboro",
-        list_of_contents: "skyblue",
         content_container: "#000",
-        title: "rgb(255,255,255)",
+        beginning_header: "white",
+        beginning_text: "gainsboro",
+        beginning_list: "gainsboro",
         script_name: "rgb(255,255,255)",
         type: "red",
         name: "gold",
