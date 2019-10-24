@@ -180,7 +180,7 @@ function SetupNewDocumentation() {
             if (!fs.existsSync('crocodocs/preferences.json')){
                 const styles = {
                     colors: {
-                        navbar: "crimson",
+                        navbar: "mediumseagreen",
                         title: "rgb(255,255,255)",
                         date: "#000",
                         list_container: "rgb(50,50,50)",
