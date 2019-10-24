@@ -10,6 +10,10 @@ This package allows you to convert unique comments to interactive HTML documenta
 
 You only need [Node.js](https://nodejs.org/en/) to run this package
 
+### Additional install
+
+If you want to run without download package again in the later time, run ```sudo npm i -g crocodocs```, you don't need ```npx crocodocs``` command prefix to load package, just ```crocodocs``` command.
+
 ### Usage
 
 Comment your lines with
