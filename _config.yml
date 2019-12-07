@@ -1,0 +1,4 @@
+name: Crocodocs
+description: Crocodocs
+paginate: 10
+baseurl: 'https://reynaldpn.github.io/crocodocs-pages'
