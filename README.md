@@ -41,7 +41,7 @@ import {
 } from "react-native"
 
 export default class HelloWorld extends React.Component {
-    //c-var String; textValue; This variable contains a text that to be shown at the screen
+    //c-var string | textValue | This variable contains a text that to be shown at the screen
     textValue = "Hello World"
 
     render() {
@@ -64,8 +64,8 @@ export default class HelloWorld extends React.Component {
         )
     }
 
-    //c-fun String; GetTextValue(); This function is used to get textValue state
-    //c-param String; additionalText; Additional text to be added at textValue
+    //c-fun String | GetTextValue() | This function is used to get textValue state
+    //c-param String | additionalText | Additional text to be added at textValue
     GetTextValue(additionalText) {
         return this.state.textValue + additionalText
     }

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SampleProject Documentation</title>
+
+        <link rel="stylesheet" type="text/css" href="./styles.css">
+    </head>
+
+    <body>
+        <div
+            class="navbar"
+        >
+            <p
+                class="date"
+            >
+                Creation date: Wed Dec 18 2019
+            </p>
+
+            <p
+                class="title"
+            >
+                SampleProject Documentation
+            </p>
+        </div>
+
+        <div
+            class="content_container"
+        >
+            <div
+                id="side-nav"
+            >
+                <p
+                    class="list_of_contents"
+                >
+                    List of contents
+                </p>
+
+                <div id="lists"></div>
+
+                <div class="padding-bottom-lists"></div>
+            </div>
+
+            <div id="content-wrapper">
+                <div id="contents"></div>
+
+                <div class="padding-bottom-contents"></div>
+            </div>
+        </div>
+
+        <script>
+            const array = [
+    {
+        "filePath": "./HelloWorldOnRoot.js",
+        "description": "This is a sample hello-world script in react-native",
+        "elements": [
+            {
+                "name": "textValue",
+                "type": "string",
+                "description": "This variable contains a text that to be shown at the screen",
+                "elementType": "variable"
+            },
+            {
+                "name": "GetTextValue()",
+                "type": "String",
+                "description": "This function is used to get textValue state",
+                "elementType": "function",
+                "parameters": [
+                    {
+                        "name": "additionalText",
+                        "type": "String",
+                        "description": "Additional text to be added at textValue"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "filePath": "./Java/HelloWorld.java",
+        "description": "This is sample hello world program in Java",
+        "elements": [
+            {
+                "name": "main()",
+                "type": "void",
+                "description": "The main function to be called in the first time",
+                "elementType": "function",
+                "parameters": [
+                    {
+                        "name": "args",
+                        "type": "String[]",
+                        "description": "Arguments"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "filePath": "./JavaScript/HelloWorld.js",
+        "description": "This is a sample hello-world script in react-native",
+        "elements": [
+            {
+                "name": "textValue",
+                "type": "string",
+                "description": "This variable contains a text that to be shown at the screen",
+                "elementType": "variable"
+            },
+            {
+                "name": "GetTextValue()",
+                "type": "String",
+                "description": "This function is used to get textValue state",
+                "elementType": "function",
+                "parameters": [
+                    {
+                        "name": "additionalText",
+                        "type": "String",
+                        "description": "Additional text to be added at textValue"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "filePath": "./JavaScript/InsideFolder/AnotherHelloWorld.js",
+        "description": "This is a sample hello-world script in react-native",
+        "elements": [
+            {
+                "name": "textValue",
+                "type": "string",
+                "description": "This variable contains a text that to be shown at the screen",
+                "elementType": "variable"
+            },
+            {
+                "name": "GetTextValue()",
+                "type": "String",
+                "description": "This function is used to get textValue state",
+                "elementType": "function",
+                "parameters": [
+                    {
+                        "name": "additionalText",
+                        "type": "String",
+                        "description": "Additional text to be added at textValue"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "filePath": "./JavaScript/SameHelloWorld.js",
+        "description": "This is a sample hello-world script in react-native",
+        "elements": [
+            {
+                "name": "textValue",
+                "type": "string",
+                "description": "This variable contains a text that to be shown at the screen",
+                "elementType": "variable"
+            },
+            {
+                "name": "GetTextValue()",
+                "type": "String",
+                "description": "This function is used to get textValue state",
+                "elementType": "function",
+                "parameters": [
+                    {
+                        "name": "additionalText",
+                        "type": "String",
+                        "description": "Additional text to be added at textValue"
+                    }
+                ]
+            }
+        ]
+    }
+]
+            
+            let listHtml = ''
+
+            const beginning = []
+
+            for(const index in beginning) {
+                if(beginning[index].type == "header") {
+                    listHtml += '<a class="script_link_wrapper" href="#header' + index.toString() + '"><p class="side_nav_link">' + beginning[index].value + '</p></a>'
+                }
+            }
+
+            for (const index in array) {
+                const id = "#script" + index
+
+                let pathSections = array[index].filePath.split('/')
+
+                for(const pathIndex in pathSections) {
+                    if(pathIndex > 0) {
+                        const isFolder = pathIndex != pathSections.length - 1
+
+                        if(index > 0 && isFolder) {
+                            let previousPathSections = array[index - 1].filePath.split('/')
+
+                            if(previousPathSections.length - 1 >= pathIndex) {
+                                if(previousPathSections[pathIndex] == pathSections[pathIndex]) {
+                                    continue
+                                }
+                            }
+                        }
+                        
+                        if(isFolder) {
+                            listHtml += '<p class="folder">'
+
+                            for(let i = 1; i < pathIndex; i++) {
+                                listHtml += "&nbsp;&nbsp;&nbsp;&nbsp;"
+                            }
+
+                            listHtml += pathSections[pathIndex] + '</p>'
+                        } else {
+                            listHtml += '<a class="script_link_wrapper" href="' + id + '"><p class="side_nav_link">'
+                        
+                            for(let i = 1; i < pathIndex; i++) {
+                                listHtml += "&nbsp;&nbsp;&nbsp;&nbsp;"
+                            }
+
+                            listHtml += pathSections[pathIndex] + '</p></a>'
+                        }
+                    }
+                }
+            }
+
+            document.getElementById('lists').innerHTML = listHtml
+
+            let html = ''
+
+            for(const index in beginning) {
+                if(beginning[index].type == "list") {
+                    html += '<ul>'
+
+                    for(const value of beginning[index].value) {
+                        html += '<li class="beginning_list"><p>' + value + '</p></li>'
+                    }
+
+                    html += '</ul>'
+                } else if(beginning[index].type == "header") {
+                    html += '<p class="beginning_header" id="header' + index.toString() + '">' + beginning[index].value + '</p>'
+                } else if(beginning[index].type == "text") {
+                    html += '<p class="beginning_text">' + beginning[index].value + '</p>'
+                }
+            }
+
+            for (const index in array) {
+                html += '<p class="script_name" id=script' + index + '>' + array[index].filePath.split("/")[array[index].filePath.split("/").length - 1] + '</p>'
+                html += '<p class="description">' + array[index].description + '</p>'
+
+                function WriteItem(title, item) {
+                    html += '<p class="type">' + title + '</p>'
+                    html += '<p class="name">' + item.type + ' - ' + item.name + '</p>'
+                    html += '<p class="description">' + item.description + '</p>'
+                }
+
+                for(const element of array[index].elements) {
+                    if(element.elementType == "variable") {
+                        WriteItem("Variable", element)
+                    } else if(element.elementType == "function") {
+                        WriteItem("Function", element)
+
+                        if(element.parameters.length > 0) {
+                            html += '<p class="param_type">Parameters</p>'
+
+                            for(const parameter of element.parameters) {
+                                html += '<p class="param_name">' + parameter.type + ' - ' + parameter.name + '</p>'
+                                html += '<p class="param_description">' + parameter.description + '</p>'
+                            }
+                        }
+                    }
+                }
+            }
+
+            document.getElementById('contents').innerHTML = html
+        </script>
+    </body>
+</html>
