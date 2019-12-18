@@ -18,20 +18,20 @@ If you want to run without download package again in the later time, run ```sudo
 
 Comment your lines with
 
-```//Des YourDescription``` this will declare a script with description in the documentation
+```//c-des YourDescription``` this will declare a script with description in the documentation
 
-```//VAR TypeData; VariableName; YourDescription``` this will declare a variable with name, type data and description in the documentation
+```//c-var TypeData; VariableName; YourDescription``` this will declare a variable with name, type data and description in the documentation
 
-```//FUN TypeData; FunctionName; YourDescription``` this will declare a function with name, type data and description in the documentation
+```//c-fun TypeData; FunctionName; YourDescription``` this will declare a function with name, type data and description in the documentation
 
-```//PARAM TypeData; ParameterName; YourDescription``` this will declare a function parameter with name, type data and description in the documentation
+```//c-param TypeData; ParameterName; YourDescription``` this will declare a function parameter with name, type data and description in the documentation
 
 Your variable or function with / without parameter comments should be exactly above the variable or the function
 
 ### Example
 
 ```
-//DES This is a sample hello-world script in react-native
+//c-des This is a sample hello-world script in react-native
 
 import React from "react"
 
@@ -41,7 +41,7 @@ import {
 } from "react-native"
 
 export default class HelloWorld extends React.Component {
-    //VAR String; textValue; This variable contains a text that to be shown at the screen
+    //c-var String; textValue; This variable contains a text that to be shown at the screen
     textValue = "Hello World"
 
     render() {
@@ -64,8 +64,8 @@ export default class HelloWorld extends React.Component {
         )
     }
 
-    //FUN String; GetTextValue(); This function is used to get textValue state
-    //PARAM String; additionalText; Additional text to be added at textValue
+    //c-fun String; GetTextValue(); This function is used to get textValue state
+    //c-param String; additionalText; Additional text to be added at textValue
     GetTextValue(additionalText) {
         return this.state.textValue + additionalText
     }
@@ -78,7 +78,7 @@ After done with commenting scripts, to export a documentation just run ```npx cr
 
 ### Customizing documentation preferences
 
-If there is no ```preferences.json``` file in crocodocs folder in the project's root path, the file will be created right before processing the making of the documentation. This file contains colors (in web color format), font family to be used and project name to be displayed preferences that you can edit as you want anyway.
+If there is no ```preferences.json``` file in crocodocs folder in the project's root path, the file will be created right before processing the making of the documentation. This file contains colors (in web color format), font family to be used and project name to be displayed preferences that you can edit as you want anyway also ignored paths if you have a lot of files in the project that needs to be ignored and not to be documentated to increase generating speed time.
 
 ```
 {
@@ -103,6 +103,9 @@ If there is no ```preferences.json``` file in crocodocs folder in the project's 
         param_description: "darkgray"
     },
     font_family: "'Lucida Console', Monaco, monospace",
+    "ignored_paths": [
+		"./crocodocs"
+	],
 	name: "ProjectName"
 }
 ```
@@ -158,7 +161,7 @@ If you want to delete all the documentation and preferences data run ```npx croc
 
 ### Removing comments and caches
 
-To delete all comments ( ```//des```, ```//fun```, ```//var```, ```//param``` ) and caches in the project run ```npx crocodocs erase-all``` at project's root path folder in command prompt / terminal.
+To delete all comments ( ```//c-des```, ```//c-fun```, ```//c-var```, ```//c-param``` ) and caches in the project run ```npx crocodocs erase-all``` at project's root path folder in command prompt / terminal.
 
 Make sure you have back up files if you want to revert it again.
 

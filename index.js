@@ -9,6 +9,14 @@ const results = []
 
 const path = require('path')
 
+const Spinner = require('cli-spinner').Spinner
+
+let scannedFilesTotal = 0
+let filesTotal = 0
+
+let spinner = new Spinner('%s Scanning files... ')
+spinner.setSpinnerString('-')
+
 commander
 .version(require("./package.json").version)
 .description('Cutting the complexity in the making of a documentation')
@@ -33,96 +41,161 @@ commander
 .description('Erase all user crocodocs comments in the project and clear all the caches')
 .action(() => eraseAll())
 
+let startTime = undefined
+let ignoredPaths = []
+
 commander.parse(process.argv)
 
 function create() {
-    const files = getAllFilesObject('.')
+    startTime = new Date()
 
-    if(files.length > 0) {
-        readFile(files[files.length - 1])
+    if (!fs.existsSync('crocodocs')){
+        fs.mkdirSync('crocodocs')
     }
+
+    if (!fs.existsSync('crocodocs/preferences.json')){
+        const styles = {
+            colors: {
+                navbar: "mediumseagreen",
+                title: "rgb(255,255,255)",
+                date: "#000",
+                list_container: "rgb(50,50,50)",
+                list_of_contents_title: "rgb(255,255,255)", 
+                side_nav_link: "aquamarine",
+                folder: "gainsboro",
+                content_container: "#000",
+                beginning_header: "white",
+                beginning_text: "gainsboro",
+                beginning_list: "gainsboro",
+                script_name: "rgb(255,255,255)",
+                type: "red",
+                name: "gold",
+                description: "lightgray",
+                param_type: "greenyellow",
+                param_name: "gold",
+                param_description: "darkgray"
+            },
+            font_family: "'Lucida Console', Monaco, monospace",
+            ignored_paths: [
+                "./crocodocs"
+            ]
+        }
+
+        styles.name = path.basename(path.resolve("."))
+
+        fs.writeFileSync('crocodocs/preferences.json', JSON.stringify(styles, null, "\t"), 'utf-8')
+    }
+
+    if (!fs.existsSync('crocodocs/beginning.json')){
+        fs.writeFileSync('crocodocs/beginning.json', "[]", 'utf-8')
+    }
+
+    fs.readFile('crocodocs/preferences.json', {encoding: 'utf-8'}, function(err, data) {
+        if (err) throw error
+
+        const json = JSON.parse(data)
+
+        ignoredPaths = json.ignored_paths
+
+        const files = getAllFilesObject('.')
+
+        if(files.length > 0) {
+            console.log('')
+
+            filesTotal = files.length
+            
+            spinner.start()
+
+            readFile(files[files.length - 1])
+        }
+    })
 }
 
 function readFile(file) {
     fs.readFile(file.path, {encoding: 'utf-8'}, function(err, data) {
         if (err) throw error
 
-        //if(file.path != "./index.js") { //DELETE THIS WHEN NOT TESTING
-            let lines = data.split('\n')
+        spinner.stop(true)
 
-            for(let i = 0; i < lines.length; i++) {
-                const lowercasedLine = lines[i].toLowerCase()
+        scannedFilesTotal++
 
-                const isHavingData = lowercasedLine.includes("//des ") || lowercasedLine.includes("//fun ") || lowercasedLine.includes("//var ")
+        additionalSpinnerInfo = "(" + scannedFilesTotal + " of " + filesTotal + " files scanned)"
 
-                let alreadyRegisteredInIndex = -1
+        spinner = new Spinner('%s Scanning files ' + additionalSpinnerInfo)
+        spinner.setSpinnerString('-')
 
-                for(let j = 0; j < results.length; j++) {
-                    if(results[j].filePath == file.path) {
-                        alreadyRegisteredInIndex = j
+        spinner.start()
+        
+        let lines = data.split('\n')
 
-                        break
-                    }
-                }
+        for(let i = 0; i < lines.length; i++) {
+            const lowercasedLine = lines[i].toLowerCase()
 
-                if(isHavingData) {
-                    if(alreadyRegisteredInIndex == -1) {
-                        results.push(
-                            {
-                                filePath: file.path,
-                                description: "",
-                                elements: []
-                            }
-                        )
-                    }
+            const isHavingData = lowercasedLine.includes("//c-des ") || lowercasedLine.includes("//c-fun ") || lowercasedLine.includes("//c-var ")
 
-                    alreadyRegisteredInIndex = results.length - 1
+            let alreadyRegisteredInIndex = -1
 
-                    const pickedResult = results[alreadyRegisteredInIndex]
+            for(let j = 0; j < results.length; j++) {
+                if(results[j].filePath == file.path) {
+                    alreadyRegisteredInIndex = j
 
-                    if(lowercasedLine.includes("//des ")) {
-                        pickedResult.description = lines[i].trim().substring(6, lines[i].length)
-                    } else if(lowercasedLine.includes("//fun ")) {
-                        pickedResult.elements.push({
-                            ...GetNameTypeAndDescription(lines[i]),
-                            elementType: "function",
-                            parameters: []
-                        })
-
-                        let parameterFoundAtNextLine = 1
-
-                        while(parameterFoundAtNextLine != -1) {
-                            let nextLine = lines[i + parameterFoundAtNextLine]
-
-                            let lowercasedNextLine = nextLine.toLowerCase()
-
-                            if(lowercasedNextLine.includes("//param")) {
-                                pickedResult.elements[pickedResult.elements.length - 1].parameters.push(GetNameTypeAndDescription(nextLine))
-
-                                parameterFoundAtNextLine++
-                            } else {
-                                parameterFoundAtNextLine = -1
-                            }
-                        }
-                    } else if(lowercasedLine.includes("//var ")) {
-                        pickedResult.elements.push({
-                            ...GetNameTypeAndDescription(lines[i]),
-                            elementType: "variable",
-                        })
-                    }
+                    break
                 }
             }
-        //}
+
+            if(isHavingData) {
+                if(alreadyRegisteredInIndex == -1) {
+                    results.push(
+                        {
+                            filePath: file.path,
+                            description: "",
+                            elements: []
+                        }
+                    )
+                }
+
+                alreadyRegisteredInIndex = results.length - 1
+
+                const pickedResult = results[alreadyRegisteredInIndex]
+
+                if(lowercasedLine.includes("//c-des ")) {
+                    pickedResult.description = lines[i].trim().substring(8, lines[i].length)
+                } else if(lowercasedLine.includes("//c-fun ")) {
+                    pickedResult.elements.push({
+                        ...GetNameTypeAndDescription(lines[i]),
+                        elementType: "function",
+                        parameters: []
+                    })
+
+                    let parameterFoundAtNextLine = 1
+
+                    while(parameterFoundAtNextLine != -1) {
+                        let nextLine = lines[i + parameterFoundAtNextLine]
+
+                        let lowercasedNextLine = nextLine.toLowerCase()
+
+                        if(lowercasedNextLine.includes("//c-param ")) {
+                            pickedResult.elements[pickedResult.elements.length - 1].parameters.push(GetNameTypeAndDescription(nextLine))
+
+                            parameterFoundAtNextLine++
+                        } else {
+                            parameterFoundAtNextLine = -1
+                        }
+                    }
+                } else if(lowercasedLine.includes("//c-var ")) {
+                    pickedResult.elements.push({
+                        ...GetNameTypeAndDescription(lines[i]),
+                        elementType: "variable",
+                    })
+                }
+            }
+        }
 
         if(file.nextFile != null) {
             readFile(file.nextFile)
         } else {
             if(results.length > 0) {
                 const fs = require('fs')
-
-                if (!fs.existsSync('crocodocs')){
-                    fs.mkdirSync('crocodocs')
-                }
 
                 if (!fs.existsSync('crocodocs/documentation')){
                     fs.mkdirSync('crocodocs/documentation')
@@ -154,9 +227,11 @@ function readFile(file) {
                     SetupNewDocumentation()
                 }
             } else {
+                spinner.stop(true)
+
                 const chalk = require('chalk')
 
-                console.log(chalk.default.yellow("\nNo data found to be documented, nothing changes!\n"))
+                console.log(chalk.yellow("\n\nNo data found to be documented, nothing changes!\n"))
             }
         }
     })
@@ -176,40 +251,6 @@ function SetupNewDocumentation() {
             let newValue = data.replace("const array = []", "const array = " + JSON.stringify(results, null, 4))
 
             newValue = newValue.replace("[DATE]", (new Date()).toDateString())
-
-            if (!fs.existsSync('crocodocs/preferences.json')){
-                const styles = {
-                    colors: {
-                        navbar: "mediumseagreen",
-                        title: "rgb(255,255,255)",
-                        date: "#000",
-                        list_container: "rgb(50,50,50)",
-                        list_of_contents_title: "rgb(255,255,255)", 
-                        side_nav_link: "aquamarine",
-                        folder: "gainsboro",
-                        content_container: "#000",
-                        beginning_header: "white",
-                        beginning_text: "gainsboro",
-                        beginning_list: "gainsboro",
-                        script_name: "rgb(255,255,255)",
-                        type: "red",
-                        name: "gold",
-                        description: "lightgray",
-                        param_type: "greenyellow",
-                        param_name: "gold",
-                        param_description: "darkgray"
-                    },
-                    font_family: "'Lucida Console', Monaco, monospace"
-                }
-
-                styles.name = path.basename(path.resolve("."))
-
-                fs.writeFileSync('crocodocs/preferences.json', JSON.stringify(styles, null, "\t"), 'utf-8')
-            }
-
-            if (!fs.existsSync('crocodocs/beginning.json')){
-                fs.writeFileSync('crocodocs/beginning.json', "[]", 'utf-8')
-            }
 
             fs.readFile('crocodocs/beginning.json', {encoding: 'utf-8'}, function(err, data) {
                 if (err) throw error
@@ -319,11 +360,24 @@ function SetupNewDocumentation() {
 
                     fs.writeFileSync(fileName, newValue, 'utf-8')
 
+                    spinner.stop(true)
+
                     const chalk = require('chalk')
 
-                    console.log(chalk.default.green("\nYour documentation has been created at ./crocodocs/documentation/index.html\n"))
+                    const time = ((new Date()).getTime() - startTime.getTime()) / 1000
 
-                    open(fileName)
+                    console.log("✨  Done in", time, "seconds -",scannedFilesTotal,"files scanned")
+                    console.log(chalk.green("Your documentation has been created at ./crocodocs/documentation/index.html\n"))
+
+                    const openingSpinner = new Spinner('%s Opening documentation... ')
+                    openingSpinner.setSpinnerString('|/-\\')
+                    openingSpinner.start()
+
+                    setTimeout(() => {
+                        openingSpinner.stop(true)
+
+                        open(fileName)
+                    }, 500)
                 })
             })
         })
@@ -333,7 +387,7 @@ function SetupNewDocumentation() {
 function GetNameTypeAndDescription(theLine) {
     let line = theLine.split("//")[theLine.split("//").length - 1]
 
-    const splittedText = line.split(';')
+    const splittedText = line.split('|')
 
     const typeString = splittedText[0].trim()
 
@@ -351,7 +405,13 @@ function GetNameTypeAndDescription(theLine) {
 function getAllFilesObject(dirPath) {
     let allFilesPath = getListAllFilesPath(dirPath).reverse()
 
-    const files = []
+    for(const path of ignoredPaths) {
+        allFilesPath = allFilesPath.filter(file => !file.startsWith(path))
+    }
+
+    allFilesPath = allFilesPath.filter(file => !file.endsWith(".jpg") && !file.endsWith(".png") && !file.endsWith(".svg") && !file.endsWith(".bmp") && !file.endsWith(".mp4") && !file.endsWith(".mkv"))
+
+    let files = []
 
     let previousFile = null
 
@@ -414,7 +474,7 @@ function clearCache() {
             
                 const chalk = require('chalk')
 
-                console.log(chalk.default.yellow("\nCaches cleared!\n"))
+                console.log(chalk.yellow("\nCaches cleared!\n"))
             } else {
                 console.log("")
             }
@@ -461,48 +521,46 @@ function readFileErase(file) {
     fs.readFile(file.path, {encoding: 'utf-8'}, function(err, data) {
         if (err) throw error
 
-        //if(file.path != "./index.js") { //DELETE THIS WHEN NOT TESTING
-            let lines = data.split('\n')
+        let lines = data.split('\n')
 
-            for(let i = 0; i < lines.length; i++) {
-                const lowercasedLine = lines[i].toLowerCase()
+        for(let i = 0; i < lines.length; i++) {
+            const lowercasedLine = lines[i].toLowerCase()
 
-                const isHavingData = lowercasedLine.includes("//des ") || lowercasedLine.includes("//fun ") || lowercasedLine.includes("//var ") || lowercasedLine.includes("//param ")
+            const isHavingData = lowercasedLine.includes("//c-des ") || lowercasedLine.includes("//c-fun ") || lowercasedLine.includes("//c-var ") || lowercasedLine.includes("//c-param ")
+            
+            if(isHavingData) {
+                let comment = lines[i].split("//")[lines[i].split("//").length - 1]
                 
-                if(isHavingData) {
-                    let comment = lines[i].split("//")[lines[i].split("//").length - 1]
-                    
-                    lines[i] = lines[i].replace(comment, "")
+                lines[i] = lines[i].replace(comment, "")
 
-                    lines[i] = lines[i].substring(0, lines[i].length - 3)
+                lines[i] = lines[i].substring(0, lines[i].length - 3)
 
-                    if(lines[i].trim() == "") {
-                        lines[i] = "[CROCODOCS_EMPTY]"
-                    }
+                if(lines[i].trim() == "") {
+                    lines[i] = "[CROCODOCS_EMPTY]"
                 }
             }
+        }
 
-            let originalLines = ""
+        let originalLines = ""
 
-            for(let i = 0; i < lines.length; i++) {
-                if(lines[i] != "[CROCODOCS_EMPTY]") {
-                    originalLines += lines[i]
+        for(let i = 0; i < lines.length; i++) {
+            if(lines[i] != "[CROCODOCS_EMPTY]") {
+                originalLines += lines[i]
 
-                    if(i != lines.length - 1) {
-                        originalLines += "\n"
-                    }
+                if(i != lines.length - 1) {
+                    originalLines += "\n"
                 }
             }
+        }
 
-            fs.writeFileSync(file.path, originalLines, 'utf-8')
-        //}
+        fs.writeFileSync(file.path, originalLines, 'utf-8')
 
         if(file.nextFile != null) {
             readFileErase(file.nextFile)
         } else {
             const chalk = require('chalk')
 
-            console.log(chalk.default.yellow("\nErase all operation is done!\n"))
+            console.log(chalk.yellow("\nErase all operation is done!\n"))
         }
     })
 }
