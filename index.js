@@ -503,13 +503,25 @@ function eraseAll() {
     .then(answers => {
         if(answers.eraseAllValidation == "Yes") {
             if (fs.existsSync('crocodocs')) {
-                fs.removeSync('crocodocs')   
-            }
+                fs.readFile('crocodocs/preferences.json', {encoding: 'utf-8'}, function(err, data) {
+                    if (err) throw error
+            
+                    const json = JSON.parse(data)
 
-            const files = getAllFilesObject('.')
+                    ignoredPaths = json.ignored_paths
 
-            if(files.length > 0) {
-                readFileErase(files[files.length - 1])
+                    fs.removeSync('crocodocs')
+
+                    const files = getAllFilesObject('.')
+
+                    if(files.length > 0) {
+                        readFileErase(files[files.length - 1])
+                    } else {
+                        console.log("")
+                    }
+                })  
+            } else {
+                console.log("")
             }
         } else {
             console.log("")
