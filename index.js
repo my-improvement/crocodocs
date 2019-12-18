@@ -15,7 +15,7 @@ let scannedFilesTotal = 0
 let filesTotal = 0
 
 let spinner = new Spinner('%s Scanning files... ')
-spinner.setSpinnerString('-')
+spinner.setSpinnerString('~')
 
 commander
 .version(require("./package.json").version)
@@ -122,28 +122,28 @@ function readFile(file) {
         additionalSpinnerInfo = "(" + scannedFilesTotal + " of " + filesTotal + " files scanned)"
 
         spinner = new Spinner('%s Scanning files ' + additionalSpinnerInfo)
-        spinner.setSpinnerString('-')
+        spinner.setSpinnerString('~')
 
         spinner.start()
         
         let lines = data.split('\n')
 
-        for(let i = 0; i < lines.length; i++) {
+        for(let i = 0, linesLength = lines.length; i < linesLength; i++) {
             const lowercasedLine = lines[i].toLowerCase()
 
             const isHavingData = lowercasedLine.includes("//c-des ") || lowercasedLine.includes("//c-fun ") || lowercasedLine.includes("//c-var ")
 
-            let alreadyRegisteredInIndex = -1
-
-            for(let j = 0; j < results.length; j++) {
-                if(results[j].filePath == file.path) {
-                    alreadyRegisteredInIndex = j
-
-                    break
-                }
-            }
-
             if(isHavingData) {
+                let alreadyRegisteredInIndex = -1
+
+                for(let j = results.length - 1; j >= 0; j--) {
+                    if(results[j].filePath == file.path) {
+                        alreadyRegisteredInIndex = j
+
+                        break
+                    }
+                }
+
                 if(alreadyRegisteredInIndex == -1) {
                     results.push(
                         {

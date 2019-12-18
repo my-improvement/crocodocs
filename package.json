@@ -2,7 +2,7 @@
   "name": "crocodocs",
   "preferGlobal": true,
   "bin": "./index.js",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Cutting the complexity in the making of a documentation",
   "homepage": "https://reynaldpn.github.io/crocodocs/",
   "main": "index.js",
