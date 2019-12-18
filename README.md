@@ -20,11 +20,11 @@ Comment your lines with
 
 ```//c-des YourDescription``` this will declare a script with description in the documentation
 
-```//c-var TypeData; VariableName; YourDescription``` this will declare a variable with name, type data and description in the documentation
+```//c-var TypeData | VariableName | YourDescription``` this will declare a variable with name, type data and description in the documentation
 
-```//c-fun TypeData; FunctionName; YourDescription``` this will declare a function with name, type data and description in the documentation
+```//c-fun TypeData | FunctionName | YourDescription``` this will declare a function with name, type data and description in the documentation
 
-```//c-param TypeData; ParameterName; YourDescription``` this will declare a function parameter with name, type data and description in the documentation
+```//c-param TypeData | ParameterName | YourDescription``` this will declare a function parameter with name, type data and description in the documentation
 
 Your variable or function with / without parameter comments should be exactly above the variable or the function
 
