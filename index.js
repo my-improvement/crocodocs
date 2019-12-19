@@ -36,10 +36,10 @@ commander
 .description('Clear crocodocs caches')
 .action(() => clearCache())
 
-commander
-.command('erase-all')
-.description('Erase all user crocodocs comments in the project and clear all the caches')
-.action(() => eraseAll())
+// commander
+// .command('erase-all')
+// .description('Erase all user crocodocs comments in the project and clear all the caches')
+// .action(() => eraseAll())
 
 let startTime = undefined
 let ignoredPaths = []
@@ -77,6 +77,8 @@ function create() {
             },
             font_family: "'Lucida Console', Monaco, monospace",
             ignored_paths: [
+                "./.git",
+                "./node_modules",
                 "./crocodocs"
             ]
         }

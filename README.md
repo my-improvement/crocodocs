@@ -104,7 +104,9 @@ If there is no ```preferences.json``` file in crocodocs folder in the project's 
     },
     font_family: "'Lucida Console', Monaco, monospace",
     "ignored_paths": [
-		"./crocodocs"
+		"./.git",
+        "./node_modules",
+        "./crocodocs"
 	],
 	name: "ProjectName"
 }

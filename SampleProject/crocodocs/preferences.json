@@ -21,6 +21,8 @@
 	},
 	"font_family": "'Lucida Console', Monaco, monospace",
 	"ignored_paths": [
+		"./.git",
+		"./node_modules",
 		"./crocodocs"
 	],
 	"name": "SampleProject"
